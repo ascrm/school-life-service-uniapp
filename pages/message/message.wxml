@@ -1,0 +1,65 @@
+<!--pages/message/message.wxml-->
+<view class="message-container">
+  <!-- 顶部选项卡 -->
+  <t-tabs defaultValue="{{0}}" bind:change="onTabsChange" t-class="custom-tabs">
+    <t-tab-panel label="聊天消息" value="{{0}}" />
+    <t-tab-panel label="系统通知" value="{{1}}" />
+  </t-tabs>
+
+  <!-- 内容区域 -->
+  <view class="content">
+    <!-- 聊天消息列表 -->
+    <view class="message-list" wx:if="{{currentTab === 0}}">
+      <block wx:if="{{chatMessages.length > 0}}">
+        <view wx:for="{{chatMessages}}" wx:key="id" bindtap="navigateToChat" data-id="{{item.id}}">
+          <t-cell hover>
+            <view slot="left-icon" class="avatar-container">
+              <t-avatar image="{{item.avatar}}" size="medium" />
+              <t-badge count="{{item.unread}}" offset="{{ [0, 0] }}" wx:if="{{item.unread > 0}}"/>
+            </view>
+            <view slot="title">
+              <view class="message-title">{{item.name}}</view>
+            </view>
+            <view slot="description" class="message-content">
+              {{item.lastMessage}}
+            </view>
+            <view slot="note" class="message-time">{{item.time}}</view>
+          </t-cell>
+        </view>
+      </block>
+      <view wx:else class="empty-container">
+        <t-empty icon="chat" description="暂无聊天消息">
+          <t-button slot="action" theme="primary" size="small" bindtap="startNewChat">发起聊天</t-button>
+        </t-empty>
+      </view>
+    </view>
+
+    <!-- 系统通知列表 -->
+    <view class="notification-list" wx:if="{{currentTab === 1}}">
+      <block wx:if="{{notifications.length > 0}}">
+        <view wx:for="{{notifications}}" wx:key="id" bindtap="viewNotification" data-id="{{item.id}}">
+          <t-cell hover>
+            <view slot="left-icon" class="notification-icon {{item.read ? 'read' : 'unread'}}">
+              <t-icon name="{{item.icon}}" size="48rpx" />
+            </view>
+            <view slot="title">
+              <view class="notification-title">{{item.title}}</view>
+            </view>
+            <view slot="description" class="notification-content">
+              {{item.content}}
+            </view>
+            <view slot="note" class="notification-time">{{item.time}}</view>
+          </t-cell>
+        </view>
+      </block>
+      <view wx:else class="empty-container">
+        <t-empty icon="notification" description="暂无系统通知" />
+      </view>
+    </view>
+  </view>
+
+  <!-- 全部已读按钮 -->
+  <view class="action-bar" wx:if="{{(currentTab === 0 && hasUnreadChat) || (currentTab === 1 && hasUnreadNotification)}}">
+    <t-button theme="primary" size="medium" variant="outline" bindtap="markAllAsRead">全部标为已读</t-button>
+  </view>
+</view>

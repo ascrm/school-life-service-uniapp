@@ -1,0 +1,94 @@
+/* pages/message/message.wxss */
+
+/* 页面容器 */
+.message-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f6f6f6;
+}
+
+/* 自定义选项卡 */
+.custom-tabs {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  --td-tab-item-active-color: #FF4F4F;
+  --td-tab-track-color: #FF4F4F;
+}
+
+/* 内容区域 */
+.content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* 消息和通知列表通用样式 */
+.message-list, .notification-list {
+  padding-bottom: 100rpx;
+}
+
+/* 头像容器 */
+.avatar-container {
+  position: relative;
+  margin-right: 16rpx;
+}
+
+/* 消息标题和内容 */
+.message-title, .notification-title {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 4rpx;
+}
+
+.message-content, .notification-content {
+  font-size: 26rpx;
+  color: #888;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 400rpx;
+}
+
+.message-time, .notification-time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 通知图标 */
+.notification-icon {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16rpx;
+}
+
+.notification-icon.unread {
+  background-color: rgba(255, 79, 79, 0.1);
+  color: #FF4F4F;
+}
+
+.notification-icon.read {
+  background-color: #f0f0f0;
+  color: #999;
+}
+
+/* 空状态容器 */
+.empty-container {
+  padding: 100rpx 0;
+}
+
+/* 动作栏 */
+.action-bar {
+  position: fixed;
+  bottom: 30rpx;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  padding: 0 30rpx;
+}

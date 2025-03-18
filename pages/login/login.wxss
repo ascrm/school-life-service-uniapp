@@ -1,0 +1,111 @@
+/* 登录页面样式 */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #ffffff;
+  padding: 30rpx;
+}
+
+.login-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 80rpx;
+  margin-bottom: 60rpx;
+}
+
+.app-logo {
+  width: 160rpx;
+  height: 160rpx;
+  margin-bottom: 30rpx;
+}
+
+.app-name {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 10rpx;
+}
+
+.app-slogan {
+  font-size: 28rpx;
+  color: #999999;
+}
+
+.login-content {
+  flex: 1;
+}
+
+.login-card {
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  padding: 40rpx;
+  margin-bottom: 40rpx;
+}
+
+.login-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 10rpx;
+}
+
+.login-subtitle {
+  font-size: 28rpx;
+  color: #999999;
+  margin-bottom: 60rpx;
+}
+
+.login-methods {
+  display: flex;
+  flex-direction: column;
+}
+
+.wechat-login-btn {
+  margin-bottom: 40rpx;
+  --td-button-primary-bg-color: #07c160;
+  --td-button-primary-active-bg-color: #06ad56;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 20rpx 0 40rpx;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1rpx;
+  background-color: #e7e7e7;
+}
+
+.divider-text {
+  color: #999999;
+  padding: 0 20rpx;
+  font-size: 24rpx;
+}
+
+.phone-login-btn {
+  --td-button-default-border-color: #cccccc;
+  --td-button-default-active-border-color: #bbbbbb;
+}
+
+.login-footer {
+  margin-top: auto;
+  padding: 40rpx 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.agreement-text {
+  font-size: 24rpx;
+  color: #999999;
+  margin-bottom: 20rpx;
+  text-align: center;
+}
+
+.agreement-link {
+  color: #FF4F4F;
+} 

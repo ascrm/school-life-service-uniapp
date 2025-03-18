@@ -1,0 +1,187 @@
+/* 页面容器 */
+.activity-detail-container {
+  min-height: 100vh;
+  background-color: #f6f6f6;
+  padding-bottom: 140rpx;
+}
+
+/* 活动头图 */
+.activity-banner {
+  width: 100%;
+  height: 400rpx;
+}
+
+/* 活动信息卡片 */
+.activity-info-card {
+  margin: -60rpx 30rpx 30rpx;
+  padding: 30rpx;
+  background-color: #FFFFFF;
+  border-radius: 16rpx;
+  position: relative;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.1);
+}
+
+.activity-status-tag {
+  position: absolute;
+  top: 30rpx;
+  right: 30rpx;
+}
+
+.activity-title {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 30rpx;
+  padding-right: 100rpx;
+}
+
+.activity-meta-list {
+  margin-bottom: 30rpx;
+}
+
+.activity-meta-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+  color: #666666;
+  font-size: 28rpx;
+}
+
+.activity-meta-item t-icon {
+  margin-right: 16rpx;
+  color: #FF4F4F;
+}
+
+.action-buttons {
+  margin-top: 20rpx;
+}
+
+/* 活动内容区段 */
+.activity-section {
+  margin: 0 30rpx 30rpx;
+  padding: 30rpx;
+  background-color: #FFFFFF;
+  border-radius: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 20rpx;
+  padding-left: 20rpx;
+  position: relative;
+}
+
+.section-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6rpx;
+  height: 30rpx;
+  background-color: #FF4F4F;
+  border-radius: 3rpx;
+}
+
+.count-text {
+  font-size: 26rpx;
+  color: #999999;
+  font-weight: normal;
+}
+
+/* 活动描述 */
+.activity-description {
+  font-size: 28rpx;
+  color: #333333;
+  line-height: 1.6;
+}
+
+/* 参与人员 */
+.participants-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.participant-avatar {
+  margin-right: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.more-participants {
+  width: 80rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  background-color: #F0F0F0;
+  color: #666666;
+  border-radius: 50%;
+  font-size: 24rpx;
+}
+
+/* 联系方式 */
+.contact-section {
+  margin-bottom: 140rpx;
+}
+
+.contact-info {
+  margin-top: 20rpx;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+  font-size: 28rpx;
+  color: #333333;
+}
+
+.contact-item t-icon {
+  margin-right: 16rpx;
+  color: #FF4F4F;
+}
+
+.contact-item text {
+  flex: 1;
+}
+
+.contact-action {
+  margin-left: 20rpx;
+}
+
+/* 底部操作栏 */
+.bottom-actions {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  background-color: #FFFFFF;
+  border-top: 1rpx solid #F0F0F0;
+  z-index: 100;
+}
+
+.action-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 40rpx;
+  color: #666666;
+  font-size: 24rpx;
+}
+
+.action-item text {
+  margin-top: 6rpx;
+}
+
+.bottom-actions t-button {
+  flex: 1;
+} 

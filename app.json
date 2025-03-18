@@ -1,0 +1,60 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/discover/discover",
+    "pages/publish/publish",
+    "pages/message/message",
+		"pages/profile/profile",
+		"pages/activity/detail",
+		"pages/post/detail",
+		"pages/login/login"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "校园生活服务",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "custom": false,
+    "color": "#999999",
+    "selectedColor": "#FF4F4F",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页",
+        "iconPath": "images/tabbar/home.png",
+        "selectedIconPath": "images/tabbar/home_selected.png"
+      },
+      {
+        "pagePath": "pages/discover/discover",
+        "text": "发现",
+        "iconPath": "images/tabbar/discover.png",
+        "selectedIconPath": "images/tabbar/discover_selected.png"
+      },
+      {
+        "pagePath": "pages/publish/publish", 
+        "text": "发布",
+        "iconPath": "images/tabbar/publish.png",
+        "selectedIconPath": "images/tabbar/publish_selected.png"
+      },
+      {
+        "pagePath": "pages/message/message",
+        "text": "消息",
+        "iconPath": "images/tabbar/message.png",
+        "selectedIconPath": "images/tabbar/message_selected.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "images/tabbar/user.png",
+        "selectedIconPath": "images/tabbar/user_selected.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

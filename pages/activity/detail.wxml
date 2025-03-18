@@ -1,0 +1,165 @@
+<view class="activity-detail-container">
+  <!-- 活动头图 -->
+  <image class="activity-banner" src="{{activityData.image}}" mode="aspectFill" />
+  
+  <!-- 活动基本信息 -->
+  <view class="activity-info-card">
+    <view class="activity-status-tag">
+      <t-tag 
+        theme="{{activityData.status === '招募中' ? 'success' : (activityData.status === '进行中' ? 'warning' : 'default')}}"
+        variant="light"
+      >
+        {{activityData.status}}
+      </t-tag>
+    </view>
+    
+    <view class="activity-title">{{activityData.title}}</view>
+    
+    <view class="activity-meta-list">
+      <view class="activity-meta-item">
+        <t-icon name="time" size="40rpx" />
+        <text>活动时间：{{activityData.time}}</text>
+      </view>
+      <view class="activity-meta-item">
+        <t-icon name="location" size="40rpx" />
+        <text>活动地点：{{activityData.location}}</text>
+      </view>
+      <view class="activity-meta-item">
+        <t-icon name="user-circle" size="40rpx" />
+        <text>主办方：{{activityData.organizer}}</text>
+      </view>
+      <view class="activity-meta-item">
+        <t-icon name="usergroup" size="40rpx" />
+        <text>已报名：{{activityData.joinedCount}}/{{activityData.maxCount}}人</text>
+      </view>
+    </view>
+    
+    <!-- 报名按钮 -->
+    <view class="action-buttons">
+      <t-button 
+        theme="primary" 
+        block 
+        disabled="{{activityData.status === '已结束' || activityData.isJoined}}"
+        bindtap="joinActivity"
+      >
+        {{activityData.isJoined ? '已报名' : (activityData.status === '已结束' ? '活动已结束' : '立即报名')}}
+      </t-button>
+    </view>
+  </view>
+
+  <!-- 活动描述 -->
+  <view class="activity-section">
+    <view class="section-title">
+      <text>活动详情</text>
+    </view>
+    <view class="activity-description">
+      <rich-text nodes="{{activityData.description}}"></rich-text>
+    </view>
+  </view>
+
+  <!-- 活动流程 -->
+  <view class="activity-section">
+    <view class="section-title">
+      <text>活动流程</text>
+    </view>
+    <t-steps layout="vertical" current="{{activityData.currentStep}}">
+      <t-step-item 
+        wx:for="{{activityData.agenda}}" 
+        wx:key="index"
+        title="{{item.title}}" 
+        content="{{item.time}}"
+        status="{{index < activityData.currentStep ? 'finish' : (index === activityData.currentStep ? 'process' : 'default')}}"
+      />
+    </t-steps>
+  </view>
+
+  <!-- 参与人员 -->
+  <view class="activity-section">
+    <view class="section-title">
+      <text>参与人员</text>
+      <text class="count-text">{{activityData.joinedCount}}人</text>
+    </view>
+    <view class="participants-list">
+      <t-avatar
+        wx:for="{{activityData.participants}}"
+        wx:key="id"
+        image="{{item.avatar}}"
+        size="medium"
+        class="participant-avatar"
+      />
+      <view wx:if="{{activityData.joinedCount > 6}}" class="more-participants">
+        +{{activityData.joinedCount - 6}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 联系主办方 -->
+  <view class="activity-section contact-section">
+    <view class="section-title">
+      <text>联系主办方</text>
+    </view>
+    <view class="contact-info">
+      <view class="contact-item">
+        <t-icon name="user" size="40rpx" />
+        <text>联系人：{{activityData.contact.name}}</text>
+      </view>
+      <view class="contact-item">
+        <t-icon name="call" size="40rpx" />
+        <text>电话：{{activityData.contact.phone}}</text>
+        <t-button 
+          theme="primary" 
+          size="small" 
+          variant="outline" 
+          bindtap="callPhone"
+          icon="call"
+          t-class="contact-action"
+        >
+          拨打
+        </t-button>
+      </view>
+      <view class="contact-item">
+        <t-icon name="chat" size="40rpx" />
+        <text>微信：{{activityData.contact.wechat}}</text>
+        <t-button 
+          theme="primary" 
+          size="small" 
+          variant="outline" 
+          bindtap="copyWechat"
+          icon="chat"
+          t-class="contact-action"
+        >
+          复制
+        </t-button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部分享及收藏 -->
+  <view class="bottom-actions">
+    <view class="action-item" bindtap="toggleCollect">
+      <t-icon name="{{activityData.isCollected ? 'star-filled' : 'star'}}" size="48rpx" color="{{activityData.isCollected ? '#FF4F4F' : '#666666'}}" />
+      <text>收藏</text>
+    </view>
+    <view class="action-item" bindtap="shareActivity">
+      <t-icon name="share" size="48rpx" />
+      <text>分享</text>
+    </view>
+    <t-button theme="primary" block bindtap="joinActivity" disabled="{{activityData.status === '已结束' || activityData.isJoined}}">
+      {{activityData.isJoined ? '已报名' : (activityData.status === '已结束' ? '活动已结束' : '立即报名')}}
+    </t-button>
+  </view>
+
+  <!-- Toast提示 -->
+  <t-toast id="t-toast" />
+  
+  <!-- 对话框 -->
+  <t-dialog
+    visible="{{joinDialogVisible}}"
+    title="确认报名"
+    content="报名后请准时参加活动，若有变动请提前联系主办方取消报名。"
+    confirm-btn="确认报名"
+    cancel-btn="再想想"
+    bind:confirm="confirmJoin"
+    bind:cancel="cancelJoin"
+  />
+</view> 

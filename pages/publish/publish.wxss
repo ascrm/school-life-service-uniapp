@@ -1,0 +1,289 @@
+/* pages/publish/publish.wxss */
+
+/* 主容器 */
+.publish-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #FFFFFF;
+  padding-bottom: 120rpx;
+}
+
+/* 自定义标签页 */
+.custom-tabs {
+  width: 100%;
+  --td-tab-item-active-color: #FF4F4F;
+  --td-tab-track-color: #FF4F4F;
+}
+
+/* 发布内容区域 */
+.publish-content {
+  flex: 1;
+  padding: 30rpx;
+}
+
+/* 图片上传区域 */
+.upload-area {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 40rpx;
+}
+
+.image-item {
+  width: 220rpx;
+  height: 220rpx;
+  margin-right: 20rpx;
+  margin-bottom: 20rpx;
+  position: relative;
+}
+
+.uploaded-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 8rpx;
+}
+
+.image-delete {
+  position: absolute;
+  top: -15rpx;
+  right: -15rpx;
+  width: 40rpx;
+  height: 40rpx;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+}
+
+.upload-button {
+  width: 220rpx;
+  height: 220rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #F6F6F6;
+  border-radius: 8rpx;
+  color: #999999;
+  position: relative;
+}
+
+.upload-tips {
+  font-size: 24rpx;
+  margin-top: 10rpx;
+}
+
+/* 视频上传区域 */
+.video-upload-area {
+  margin-bottom: 40rpx;
+}
+
+.video-preview {
+  position: relative;
+  width: 100%;
+  height: 400rpx;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+
+.video-player {
+  width: 100%;
+  height: 100%;
+}
+
+.video-delete {
+  position: absolute;
+  top: 20rpx;
+  right: 20rpx;
+  width: 60rpx;
+  height: 60rpx;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+}
+
+/* 文本输入区域 */
+.text-input-area {
+  margin-bottom: 40rpx;
+}
+
+.title-input {
+  margin-bottom: 20rpx;
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+.content-textarea {
+  font-size: 28rpx;
+  min-height: 200rpx;
+}
+
+.word-count {
+  text-align: right;
+  font-size: 24rpx;
+  color: #999999;
+  margin-top: 10rpx;
+}
+
+/* 标签区域 */
+.tags-area {
+  margin-bottom: 40rpx;
+}
+
+.section-title {
+  font-size: 28rpx;
+  margin-bottom: 20rpx;
+  color: #333333;
+}
+
+.tips {
+  font-size: 24rpx;
+  color: #999999;
+  margin-left: 10rpx;
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.tag-item {
+  margin-right: 20rpx;
+  margin-bottom: 20rpx;
+  --td-tag-primary-color: #FF4F4F;
+  --td-tag-primary-light-color: rgba(255, 79, 79, 0.1);
+}
+
+.add-tag {
+  display: flex;
+  align-items: center;
+  padding: 10rpx 20rpx;
+  background-color: #F6F6F6;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+  color: #666666;
+}
+
+.add-tag t-icon {
+  margin-right: 6rpx;
+}
+
+/* 位置信息 */
+.location-area {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+  border-top: 1rpx solid #F0F0F0;
+  color: #666666;
+  font-size: 28rpx;
+}
+
+.location-area t-icon {
+  margin-right: 10rpx;
+}
+
+.location-area text {
+  flex: 1;
+}
+
+/* 底部发布按钮 */
+.publish-bottom {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 20rpx 30rpx;
+  background-color: #FFFFFF;
+  border-top: 1rpx solid #F0F0F0;
+  z-index: 100;
+}
+
+/* 标签选择弹出层 */
+.tag-popup {
+  width: 100%;
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #FFFFFF;
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #F0F0F0;
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+.popup-content {
+  flex: 1;
+  padding: 30rpx;
+  overflow-y: auto;
+}
+
+/* 加载状态容器 */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400rpx;
+}
+
+.loading-text {
+  margin-top: 20rpx;
+  font-size: 28rpx;
+  color: #999999;
+}
+
+/* 错误状态容器 */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400rpx;
+}
+
+.error-container t-icon {
+  color: #FF4F4F;
+  margin-bottom: 20rpx;
+}
+
+.error-text {
+  font-size: 28rpx;
+  color: #666666;
+  margin-bottom: 30rpx;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.recommend-tag {
+  margin-right: 20rpx;
+  margin-bottom: 20rpx;
+  padding: 16rpx 30rpx;
+  font-size: 28rpx;
+}
+
+.recommend-tag.selected {
+  background-color: rgba(255, 79, 79, 0.1);
+  color: #FF4F4F;
+  --td-tag-default-color: #FF4F4F;
+  --td-tag-default-light-color: rgba(255, 79, 79, 0.1);
+}
+
+.popup-footer {
+  padding: 30rpx;
+  border-top: 1rpx solid #F0F0F0;
+}

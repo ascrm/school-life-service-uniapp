@@ -1,0 +1,62 @@
+<view class="login-container">
+  <view class="login-header">
+    <image class="app-logo" src="/images/logo.png" mode="aspectFit"></image>
+    <view class="app-name">校园生活服务</view>
+    <view class="app-slogan">连接校园，分享生活</view>
+  </view>
+  
+  <view class="login-content">
+    <view class="login-card">
+      <view class="login-title">登录/注册</view>
+      <view class="login-subtitle">登录后可享受更多功能</view>
+      
+      <view class="login-methods">
+        <t-button
+          theme="primary"
+          size="large"
+          block
+          bindtap="getUserProfile"
+          icon="logo-wechat"
+          t-class="wechat-login-btn"
+        >
+          微信一键登录
+        </t-button>
+        
+        <view class="divider">
+          <view class="divider-line"></view>
+          <view class="divider-text">其他登录方式</view>
+          <view class="divider-line"></view>
+        </view>
+        
+        <t-button
+          theme="default"
+          size="large"
+          block
+          bindtap="showPhoneLogin"
+          variant="outline"
+          icon="mobile"
+          t-class="phone-login-btn"
+        >
+          手机号登录
+        </t-button>
+      </view>
+    </view>
+  </view>
+  
+  <view class="login-footer">
+    <view class="agreement-text">
+      登录即表示您同意
+      <text bindtap="showUserAgreement" class="agreement-link">《用户协议》</text>
+      和
+      <text bindtap="showPrivacyPolicy" class="agreement-link">《隐私政策》</text>
+    </view>
+    
+    <t-button theme="default" size="small" bindtap="skipLogin" variant="text">
+      暂不登录，先去逛逛
+    </t-button>
+  </view>
+  
+  <!-- 手机号登录弹窗可以在需要时添加 -->
+  
+  <t-toast id="t-toast" />
+</view> 

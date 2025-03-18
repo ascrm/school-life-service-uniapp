@@ -1,0 +1,14 @@
+{
+  "navigationBarTitleText": "内容详情",
+  "usingComponents": {
+    "t-avatar": "tdesign-miniprogram/avatar/avatar",
+    "t-button": "tdesign-miniprogram/button/button",
+    "t-icon": "tdesign-miniprogram/icon/icon",
+    "t-tag": "tdesign-miniprogram/tag/tag",
+    "t-input": "tdesign-miniprogram/input/input",
+    "t-toast": "tdesign-miniprogram/toast/toast",
+    "t-popup": "tdesign-miniprogram/popup/popup",
+    "t-image": "tdesign-miniprogram/image/image",
+    "t-divider": "tdesign-miniprogram/divider/divider"
+  }
+} 

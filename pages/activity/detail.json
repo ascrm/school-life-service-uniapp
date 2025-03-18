@@ -1,0 +1,14 @@
+{
+  "navigationBarTitleText": "活动详情",
+  "usingComponents": {
+    "t-button": "tdesign-miniprogram/button/button",
+    "t-icon": "tdesign-miniprogram/icon/icon",
+    "t-tag": "tdesign-miniprogram/tag/tag",
+    "t-avatar": "tdesign-miniprogram/avatar/avatar",
+    "t-steps": "tdesign-miniprogram/steps/steps",
+    "t-step-item": "tdesign-miniprogram/step-item/step-item",
+    "t-toast": "tdesign-miniprogram/toast/toast",
+    "t-dialog": "tdesign-miniprogram/dialog/dialog",
+    "t-divider": "tdesign-miniprogram/divider/divider"
+  }
+} 

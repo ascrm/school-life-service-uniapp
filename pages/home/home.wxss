@@ -1,0 +1,196 @@
+/**home.wxss**/
+page {
+  height: 100vh;
+  background-color: #f6f6f6;
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* 导航栏样式 */
+.custom-navbar {
+  --td-navbar-bg-color: #FF4F4F;
+  --td-navbar-color: #FFFFFF;
+}
+
+/* 内容区域 */
+.content-container {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* 轮播图 */
+.banner {
+  height: 300rpx;
+  margin-bottom: 80rpx;
+}
+
+/* 通知栏 */
+/* .notice-bar {
+  margin: 30rpx;
+  border-radius: 8rpx;
+  --td-notice-bar-bg-color: rgba(255, 79, 79, 0.08);
+  --td-notice-bar-color: #FF4F4F;
+  --td-notice-bar-icon-color: #FF4F4F;
+} */
+
+/* 通用区块容器 */
+.section-container {
+  margin: 0 20rpx 30rpx;
+  padding: 20rpx;
+  background-color: #FFFFFF;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+/* 区块标题 */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.more-text {
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 今日校园 */
+.today-section {
+  border-top: 4rpx solid #FF4F4F;
+}
+
+.date-box {
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+  color: #666;
+}
+
+.date-text {
+  margin-left: 8rpx;
+}
+
+.today-info-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10rpx;
+}
+
+.today-info-card {
+  width: 25%;
+  text-align: center;
+  padding: 10rpx 0;
+}
+
+.info-label {
+  font-size: 24rpx;
+  color: #666;
+  margin-bottom: 10rpx;
+}
+
+.info-value {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+/* 服务网格 */
+.services-grid {
+  --td-grid-item-text-color: #333;
+  --td-grid-item-text-font-size: 26rpx;
+  --td-grid-item-image-width: 64rpx;
+  --td-grid-item-image-height: 64rpx;
+  --td-grid-item-image-margin-bottom: 16rpx;
+}
+
+/* 服务分类 */
+.service-categories {
+  margin-top: 10rpx;
+}
+
+.category-section {
+  margin-bottom: 30rpx;
+}
+
+.category-title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+}
+
+.title-indicator {
+  width: 6rpx;
+  height: 28rpx;
+  background-color: #FF4F4F;
+  margin-right: 10rpx;
+  border-radius: 3rpx;
+}
+
+/* 活动卡片 */
+.activity-card {
+  display: flex;
+  background: #FFFFFF;
+  border-radius: 12rpx;
+  padding: 16rpx;
+  margin-bottom: 20rpx;
+  border: 1rpx solid #F0F0F0;
+}
+
+.activity-image {
+  width: 180rpx;
+  height: 120rpx;
+  border-radius: 8rpx;
+  margin-right: 16rpx;
+}
+
+.activity-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.activity-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10rpx;
+}
+
+.activity-info {
+  display: flex;
+  font-size: 22rpx;
+  color: #999;
+  margin-bottom: 10rpx;
+}
+
+.activity-time, .activity-location {
+  display: flex;
+  align-items: center;
+  margin-right: 20rpx;
+}
+
+.activity-time text, .activity-location text {
+  margin-left: 6rpx;
+}
+
+.activity-status {
+  display: flex;
+	justify-content: flex-end;
+	font-size: 24rpx;
+}

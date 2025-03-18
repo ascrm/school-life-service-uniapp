@@ -1,0 +1,15 @@
+{
+  "navigationBarTitleText": "发布内容",
+  "usingComponents": {
+    "t-button": "tdesign-miniprogram/button/button",
+    "t-input": "tdesign-miniprogram/input/input",
+    "t-textarea": "tdesign-miniprogram/textarea/textarea",
+    "t-icon": "tdesign-miniprogram/icon/icon",
+    "t-tag": "tdesign-miniprogram/tag/tag",
+    "t-tabs": "tdesign-miniprogram/tabs/tabs",
+    "t-tab-panel": "tdesign-miniprogram/tab-panel/tab-panel",
+    "t-popup": "tdesign-miniprogram/popup/popup",
+    "t-toast": "tdesign-miniprogram/toast/toast",
+    "t-loading": "tdesign-miniprogram/loading/loading"
+  }
+}

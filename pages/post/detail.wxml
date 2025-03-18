@@ -1,0 +1,134 @@
+<view class="post-detail-container">
+  <!-- 固定在顶部的文章头部信息 -->
+  <view class="post-header">
+    <view class="author-info">
+      <t-avatar image="{{postData.author.avatar}}" size="medium" />
+      <view class="author-meta">
+        <view class="author-name">{{postData.author.name}}</view>
+      </view>
+    </view>
+    <view class="header-actions">
+      <t-button 
+        theme="primary" 
+        size="small" 
+        variant="outline" 
+        shape="round"
+        bindtap="followAuthor"
+        style="width: 150rpx;color: red;"
+      >
+        {{postData.isFollowed ? '已关注' : '关注'}}
+      </t-button>
+      <t-button variant="text" shape="circle" icon="share" hover-class="none" bindtap="handleShare" />
+    </view>
+  </view>
+
+  <!-- 内容滚动区域 -->
+  <view class="scroll-content">
+    <!-- 文章标题 -->
+    <view class="post-title">{{postData.title}}</view>
+
+    <!-- 文章内容 -->
+    <view class="post-content">
+      <view wx:for="{{postData.content}}" wx:key="index" class="content-block">
+        <view wx:if="{{item.type === 'text'}}" class="text-block">{{item.content}}</view>
+        <image 
+          wx:if="{{item.type === 'image'}}" 
+          src="{{item.content}}" 
+          mode="widthFix" 
+          class="image-block"
+          data-index="{{index}}"
+          bindtap="previewImage"
+        />
+      </view>
+    </view>
+    
+    <!-- 文章发布时间（移到文章末尾） -->
+    <view class="post-time">{{postData.createTime}}</view>
+
+    <!-- 标签列表 -->
+    <view class="tags-list" wx:if="{{postData.tags.length > 0}}">
+      <t-tag 
+        wx:for="{{postData.tags}}" 
+        wx:key="index" 
+        variant="light" 
+        theme="primary" 
+        size="medium"
+        bindtap="onTagClick" 
+        data-tag="{{item}}"
+        t-class="custom-tag"
+      >
+        {{item}}
+      </t-tag>
+    </view>
+
+    <t-divider content="评论区" />
+
+    <!-- 评论列表 -->
+    <view class="comments-section">
+      <view wx:if="{{postData.comments.length > 0}}">
+        <view 
+          wx:for="{{postData.comments}}" 
+          wx:key="id" 
+          class="comment-item"
+        >
+          <t-avatar image="{{item.avatar}}" size="small" />
+          <view class="comment-content">
+            <view class="comment-user">{{item.username}}</view>
+            <view class="comment-text">{{item.content}}</view>
+            <view class="comment-meta">
+              <text class="comment-time">{{item.time}}</text>
+              <view class="comment-actions">
+                <t-icon 
+                  name="{{item.isLiked ? 'heart-filled' : 'heart'}}" 
+                  size="32rpx" 
+                  color="{{item.isLiked ? '#FF4F4F' : '#BBBBBB'}}" 
+                  bindtap="likeComment" 
+                  data-id="{{item.id}}" 
+                />
+                <text>{{item.likes}}</text>
+                <t-icon name="chat" size="32rpx" bindtap="replyComment" data-id="{{item.id}}" data-name="{{item.username}}" />
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view wx:else class="no-comments">
+        <t-icon name="chat" size="64rpx" color="#DDDDDD" />
+        <text>暂无评论，快来抢沙发吧~</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部固定栏 -->
+  <view class="comment-input-container">
+    <view class="comment-input-box">
+      <t-input
+        class="comment-input"
+        value="{{commentText}}"
+        placeholder="{{replyTo ? '回复 '+replyTo : '写下你的评论...'}}"
+        bind:change="onCommentChange"
+        borderless
+        clearable
+      />
+    </view>
+    
+    <!-- 互动操作按钮 -->
+    <view class="interaction-actions">
+      <view class="interaction-item {{postData.isLiked ? 'active' : ''}}" bindtap="handleLike">
+        <t-icon name="{{postData.isLiked ? 'heart-filled' : 'heart'}}" size="48rpx" />
+        <text>{{postData.likeCount}}</text>
+      </view>
+      <view class="interaction-item" bindtap="focusComment">
+        <t-icon name="chat" size="48rpx" />
+        <text>{{postData.commentCount}}</text>
+      </view>
+      <view class="interaction-item" bindtap="handleCollect">
+        <t-icon name="{{postData.isCollected ? 'star-filled' : 'star'}}" size="48rpx" />
+        <text>{{postData.isCollected ? '已收藏' : '收藏'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Toast提示 -->
+  <t-toast id="t-toast" />
+</view> 

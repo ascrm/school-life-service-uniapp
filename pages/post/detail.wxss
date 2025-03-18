@@ -1,0 +1,217 @@
+/* 页面容器 */
+.post-detail-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #FFFFFF;
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 120rpx;
+}
+
+/* 固定在顶部的头部信息 */
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  background-color: #FFFFFF;
+  border-bottom: 1rpx solid #F0F0F0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+.author-info {
+  display: flex;
+  align-items: center;
+}
+
+.author-meta {
+  margin-left: 16rpx;
+}
+
+.author-name {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+}
+
+/* 内容滚动区域 */
+.scroll-content {
+  flex: 1;
+  padding: 30rpx;
+  margin-top: 120rpx;
+}
+
+/* 文章标题 */
+.post-title {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 30rpx;
+  line-height: 1.4;
+}
+
+/* 文章内容 */
+.post-content {
+  margin-bottom: 20rpx;
+}
+
+.content-block {
+  margin-bottom: 20rpx;
+}
+
+.text-block {
+  font-size: 30rpx;
+  color: #333;
+  line-height: 1.6;
+  text-align: justify;
+}
+
+.image-block {
+  width: 100%;
+  border-radius: 12rpx;
+  margin: 20rpx 0;
+}
+
+/* 文章发布时间（现在在内容末尾） */
+.post-time {
+  font-size: 24rpx;
+  color: #999;
+  text-align: right;
+  margin-bottom: 30rpx;
+}
+
+/* 标签列表 */
+.tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 30rpx;
+}
+
+.custom-tag {
+  margin-right: 16rpx;
+  margin-bottom: 16rpx;
+  --td-tag-primary-color: #FF4F4F;
+  --td-tag-primary-light-color: rgba(255, 79, 79, 0.1);
+}
+
+/* 评论区域调整 */
+.comments-section {
+  margin-bottom: 60rpx; /* 增加底部空间，避免被固定栏遮挡 */
+}
+
+.comment-item {
+  display: flex;
+  margin-bottom: 30rpx;
+}
+
+.comment-content {
+  margin-left: 20rpx;
+  flex: 1;
+}
+
+.comment-user {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 6rpx;
+}
+
+.comment-text {
+  font-size: 28rpx;
+  color: #333;
+  line-height: 1.5;
+  margin-bottom: 10rpx;
+}
+
+.comment-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.comment-actions {
+  display: flex;
+  align-items: center;
+}
+
+.comment-actions text {
+  margin: 0 10rpx 0 4rpx;
+}
+
+.no-comments {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60rpx 0;
+  color: #BBBBBB;
+  font-size: 28rpx;
+}
+
+.no-comments text {
+  margin-top: 20rpx;
+}
+
+/* 底部固定栏样式调整 */
+.comment-input-container {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  background-color: #FFFFFF;
+  border-top: 1rpx solid #F0F0F0;
+  z-index: 100;
+}
+
+.comment-input-box {
+  flex: 1;
+}
+
+.comment-input {
+  background-color: #F6F6F6;
+  border-radius: 36rpx;
+  --td-input-bg-color: #F6F6F6;
+  --td-input-border-radius: 36rpx;
+}
+
+/* 互动操作按钮样式 */
+.interaction-actions {
+  display: flex;
+  margin-left: 20rpx;
+}
+
+.interaction-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 30rpx;
+  color: #666;
+  font-size: 24rpx;
+}
+
+.interaction-item.active {
+  color: #FF4F4F;
+}
+
+.interaction-item text {
+  margin-top: 6rpx;
+}
+
+/* 删除原互动栏 */
+.interaction-bar {
+  display: none;
+} 

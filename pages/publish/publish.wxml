@@ -1,0 +1,209 @@
+<!--pages/publish/publish.wxml-->
+<view class="publish-container">
+  <!-- 顶部选项卡 -->
+  <t-tabs defaultValue="{{activeTab}}" bind:change="onTabChange" t-class="custom-tabs" theme="line">
+    <t-tab-panel label="图文" value="image" />
+    <t-tab-panel label="视频" value="video" />
+  </t-tabs>
+
+  <!-- 图文发布内容 -->
+  <view class="publish-content" wx:if="{{activeTab === 'image'}}">
+    <!-- 图片上传区域 -->
+    <view class="upload-area">
+      <view wx:for="{{imageList}}" wx:key="index" class="image-item">
+        <image src="{{item}}" mode="aspectFill" class="uploaded-image" bindtap="previewImage" data-index="{{index}}" />
+        <view class="image-delete" catchtap="deleteImage" data-index="{{index}}">
+          <t-icon name="close" size="36rpx" />
+        </view>
+      </view>
+      
+      <view class="upload-button" bindtap="chooseImage" wx:if="{{imageList.length < 9}}">
+        <t-icon name="add" size="60rpx" />
+        <text>添加图片</text>
+        <text class="upload-tips">{{imageList.length}}/9</text>
+      </view>
+    </view>
+
+    <!-- 文本输入区域 -->
+    <view class="text-input-area">
+      <t-input 
+        placeholder="添加标题..." 
+        value="{{title}}" 
+        maxlength="30"
+        bind:change="onTitleChange"
+        borderless
+        t-class="title-input"
+      />
+      <t-textarea 
+        placeholder="分享你的想法..." 
+        value="{{content}}" 
+        maxlength="1000"
+        bind:change="onContentChange"
+        disableDefaultPadding="{{true}}"
+        autosize
+        t-class="content-textarea"
+      />
+      <view class="word-count">{{content.length}}/1000</view>
+    </view>
+
+    <!-- 标签选择区域 -->
+    <view class="tags-area">
+      <view class="section-title">
+        <text>添加标签</text>
+        <text class="tips">(最多选择3个)</text>
+      </view>
+      <view class="tags-container">
+        <t-tag 
+          wx:for="{{selectedTagsNames}}" 
+          wx:key="index" 
+          class="tag-item"
+          closable
+          bind:close="removeTag" 
+          data-index="{{index}}"
+          variant="light"
+          theme="primary"
+        >
+          {{item}}
+        </t-tag>
+        <view class="add-tag" bindtap="showTagSelector" wx:if="{{selectedTagsNames.length < 3}}">
+          <t-icon name="add" size="32rpx" />
+          <text>添加</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 位置信息 -->
+    <view class="location-area" bindtap="chooseLocation">
+      <t-icon name="location" size="40rpx" />
+      <text wx:if="{{!location}}">添加位置</text>
+      <text wx:else>{{location}}</text>
+      <t-icon wx:if="{{location}}" name="close" size="32rpx" catchtap="clearLocation" />
+    </view>
+  </view>
+
+  <!-- 视频发布内容 -->
+  <view class="publish-content" wx:if="{{activeTab === 'video'}}">
+    <!-- 视频上传区域 -->
+    <view class="video-upload-area">
+      <view wx:if="{{videoPath}}" class="video-preview">
+        <video src="{{videoPath}}" class="video-player" />
+        <view class="video-delete" catchtap="deleteVideo">
+          <t-icon name="close" size="36rpx" />
+        </view>
+      </view>
+      
+      <view class="upload-button" bindtap="chooseVideo" wx:if="{{!videoPath}}">
+        <t-icon name="video" size="60rpx" />
+        <text>添加视频</text>
+      </view>
+    </view>
+
+    <!-- 文本输入区域 -->
+    <view class="text-input-area" >
+      <t-input 
+        placeholder="添加标题..." 
+        value="{{title}}" 
+        maxlength="30"
+        bind:change="onTitleChange"
+        borderless
+        t-class="title-input"
+      />
+      <t-textarea 
+        placeholder="说点什么..." 
+        value="{{content}}" 
+        maxlength="300"
+        bind:change="onContentChange"
+        disableDefaultPadding="{{true}}"
+        autosize
+        t-class="content-textarea"
+      />
+      <view class="word-count">{{content.length}}/300</view>
+    </view>
+
+    <!-- 标签选择区域 -->
+    <view class="tags-area" >
+      <view class="section-title">
+        <text>添加标签</text>
+        <text class="tips">(最多选择3个)</text>
+      </view>
+      <view class="tags-container">
+        <t-tag 
+          wx:for="{{selectedTagsNames}}" 
+          wx:key="index" 
+          class="tag-item"
+          closable
+          bind:close="removeTag" 
+          data-index="{{index}}"
+          variant="light"
+          theme="primary"
+        >
+          {{item}}
+        </t-tag>
+        <view class="add-tag" bindtap="showTagSelector" wx:if="{{selectedTagsNames.length < 3}}">
+          <t-icon name="add" size="32rpx" />
+          <text>添加</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部发布按钮 -->
+  <view class="publish-bottom">
+    <t-button 
+      theme="primary" 
+      size="large" 
+      block 
+      disabled="{{!canPublish}}"
+      loading="{{isSubmitting}}"
+      bind:tap="submitContent"
+    >
+      发布
+    </t-button>
+  </view>
+
+  <!-- 标签选择弹出层 -->
+  <t-popup visible="{{showTagPopup}}" placement="bottom" bind:visible-change="onTagPopupClose">
+    <view class="tag-popup">
+      <view class="popup-header">
+        <text>选择标签</text>
+        <t-icon name="close" size="40rpx" bind:tap="hideTagSelector" />
+      </view>
+      <view class="popup-content">
+        <!-- 标签加载中 -->
+        <view class="loading-container" wx:if="{{tagsLoading}}">
+          <t-loading theme="circular" size="48rpx" />
+          <view class="loading-text">加载中...</view>
+        </view>
+        
+        <!-- 标签加载失败 -->
+        <view class="error-container" wx:elif="{{tagsError}}">
+          <t-icon name="error-circle" size="64rpx" />
+          <view class="error-text">加载失败，请重试</view>
+          <t-button size="small" theme="primary" bind:tap="showTagSelector">重新加载</t-button>
+        </view>
+        
+        <!-- 标签列表 -->
+        <view class="tag-list" wx:else>
+          <t-tag 
+            wx:for="{{recommendTags}}" 
+            wx:key="index"
+            variant="light"
+            shape="round"
+            theme="default"
+            class="recommend-tag {{item.selected ? 'selected' : ''}}"
+            bindtap="toggleTag"
+            data-index="{{index}}"
+          >
+            {{item.name}}
+          </t-tag>
+        </view>
+      </view>
+      <view class="popup-footer">
+        <t-button theme="primary" size="large" block bind:tap="confirmTagSelection">确定</t-button>
+      </view>
+    </view>
+  </t-popup>
+
+  <!-- Toast提示 -->
+  <t-toast id="t-toast" />
+</view>

@@ -1,0 +1,138 @@
+<!--home.wxml-->
+<view class="page-container">
+  <!-- 顶部导航栏 -->
+  <t-navbar title="校园生活" titleMaxLength="{{10}}" class="custom-navbar">
+  </t-navbar>
+  
+  <!-- 主内容区域 -->
+  <scroll-view scroll-y class="content-container">
+    <!-- 顶部轮播图 -->
+    <t-swiper 
+      current="{{current}}"
+      autoplay="{{true}}"
+      duration="{{500}}"
+      interval="{{5000}}"
+			list="{{swiperList}}"
+      navigation="{{ { type: 'dots' } }}"
+      class="banner">
+    </t-swiper>
+    
+    <!-- 常用服务 -->
+    <view class="section-container">
+      <view class="section-header">
+        <text class="section-title">常用服务</text>
+      </view>
+      
+      <t-grid column="{{4}}" border="{{false}}" class="services-grid">
+        <t-grid-item 
+          wx:for="{{frequentServices}}" 
+          wx:key="id" 
+          text="{{item.title}}" 
+          image="{{item.icon}}"
+          bindtap="navigateTo" 
+          data-url="{{item.url}}"
+        />
+      </t-grid>
+    </view>
+    
+    <!-- 服务分类 -->
+    <view class="section-container">
+      <view class="section-header">
+        <text class="section-title">全部服务</text>
+      </view>
+      
+      <view class="service-categories">
+        <!-- 校园服务 -->
+        <view class="category-section">
+          <view class="category-title">
+            <view class="title-indicator"></view>
+            <text>校园服务</text>
+          </view>
+          
+          <t-grid column="{{4}}" border="{{false}}" class="services-grid">
+            <t-grid-item 
+              wx:for="{{campusServices}}" 
+              wx:key="id" 
+              text="{{item.title}}" 
+              image="{{item.icon}}"
+              bindtap="navigateTo" 
+              data-url="{{item.url}}"
+            />
+          </t-grid>
+        </view>
+        
+        <!-- 生活服务 -->
+        <view class="category-section">
+          <view class="category-title">
+            <view class="title-indicator" style="background-color: #4ECDB6;"></view>
+            <text>生活服务</text>
+          </view>
+          
+          <t-grid column="{{4}}" border="{{false}}" class="services-grid">
+            <t-grid-item 
+              wx:for="{{lifeServices}}" 
+              wx:key="id" 
+              text="{{item.title}}" 
+              image="{{item.icon}}"
+              bindtap="navigateTo" 
+              data-url="{{item.url}}"
+            />
+          </t-grid>
+        </view>
+        
+        <!-- 学习服务 -->
+        <view class="category-section">
+          <view class="category-title">
+            <view class="title-indicator" style="background-color: #5E7CE0;"></view>
+            <text>学习服务</text>
+          </view>
+          
+          <t-grid column="{{4}}" border="{{false}}" class="services-grid">
+            <t-grid-item 
+              wx:for="{{learningServices}}" 
+              wx:key="id" 
+              text="{{item.title}}" 
+              image="{{item.icon}}"
+              bindtap="navigateTo" 
+              data-url="{{item.url}}"
+            />
+          </t-grid>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 校园活动 -->
+    <view class="section-container">
+      <view class="section-header">
+        <text class="section-title">校园活动</text>
+        <view class="more-text" bindtap="viewAllActivities">
+          <text>更多</text>
+          <t-icon name="chevron-right" size="32rpx" />
+        </view>
+      </view>
+      
+      <view class="activity-card" wx:for="{{activities}}" wx:key="id" bindtap="navigateToActivity" data-id="{{item.id}}">
+        <image src="{{item.image}}" mode="aspectFill" class="activity-image" />
+        <view class="activity-content">
+          <view class="activity-title">{{item.title}}</view>
+          <view class="activity-info">
+            <view class="activity-time">
+              <t-icon name="calendar" size="24rpx" />
+              <text>{{item.time}}</text>
+            </view>
+            <view class="activity-location">
+              <t-icon name="location" size="24rpx" />
+              <text>{{item.location}}</text>
+            </view>
+          </view>
+          <view class="activity-status">
+            <t-tag size="small" theme="{{item.status === '招募中' ? 'success' : (item.status === '进行中' ? 'warning' : 'default')}}">
+              {{item.status}}
+            </t-tag>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>
+
