@@ -1,5 +1,3 @@
-const {discover} = require('../../api/index')
-
 // pages/discover/discover.js
 Page({
 
@@ -9,15 +7,6 @@ Page({
   data: {
     currentTab: 0,
     isLoading: false,
-    // 分类标签数据
-    categories: [
-      { label: "推荐", value: 0 },
-      { label: "活动", value: 1 },
-      { label: "学习", value: 2 },
-      { label: "生活", value: 3 },
-      { label: "二手", value: 4 },
-      { label: "社交", value: 5 }
-    ],
     hotTags: [
       "校园摄影", "期末复习", "美食推荐", "寝室神器", 
       "运动健身", "考研经验", "社团活动", "实习经历", 
@@ -171,8 +160,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-		// 页面加载时的逻辑
-		
+    // 页面加载时的逻辑
   },
 
   /**

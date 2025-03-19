@@ -337,15 +337,3 @@
 .event-time text, .event-location text {
   margin-left: 6rpx;
 }
-
-.event-location-row {
-  display: flex;
-  align-items: center;
-  font-size: 22rpx;
-  color: #999;
-  margin: 8rpx 0;
-}
-
-.event-location-row text {
-  margin-left: 6rpx;
-}

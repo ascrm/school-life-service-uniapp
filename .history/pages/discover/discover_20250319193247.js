@@ -1,5 +1,3 @@
-const {discover} = require('../../api/index')
-
 // pages/discover/discover.js
 Page({
 
@@ -171,8 +169,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-		// 页面加载时的逻辑
-		
+    // 页面加载时的逻辑
   },
 
   /**

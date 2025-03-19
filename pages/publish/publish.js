@@ -1,6 +1,6 @@
 // pages/publish/publish.js
 import Toast from 'tdesign-miniprogram/toast/index';
-const { post } = require('../../api/index')
+const { publish } = require('../../api/index')
 
 Page({
 
@@ -230,7 +230,7 @@ Page({
     });
     
     // 从后端获取所有标签
-    post.getAllTags()
+    publish.getAllTagsApi()
       .then(res => {
         if (res && Array.isArray(res)) {
           // 处理标签数据，添加selected属性
@@ -400,7 +400,7 @@ Page({
     }
 
     // 逐个上传文件
-    const uploadPromises = files.map(file => post.uploadImageApi(file));
+    const uploadPromises = files.map(file => publish.uploadImageApi(file));
     
     Promise.all(uploadPromises)
       .then(urls => {
@@ -420,7 +420,7 @@ Page({
         };
 
         // 发布帖子
-        return post.publishPostApi(postsDto);
+        return publish.publishPostApi(postsDto);
       })
       .then(res => {
         Toast({

@@ -20,12 +20,12 @@
       t-class="custom-tabs"
       sticky
     >
-      <t-tab-panel 
-        wx:for="{{categories}}" 
-        wx:key="value"
-        label="{{item.label}}" 
-        value="{{item.value}}" 
-      />
+      <t-tab-panel label="推荐" value="{{0}}" />
+      <t-tab-panel label="活动" value="{{1}}" />
+      <t-tab-panel label="学习" value="{{2}}" />
+      <t-tab-panel label="生活" value="{{3}}" />
+      <t-tab-panel label="二手" value="{{4}}" />
+      <t-tab-panel label="社交" value="{{5}}" />
     </t-tabs>
   </t-sticky>
 
@@ -38,15 +38,9 @@
           <image src="{{item.image}}" mode="aspectFill" class="post-image"></image>
           <view class="post-info">
             <view class="post-title">{{item.title}}</view>
-            <view class="post-footer">
-              <view class="post-author">
-                <t-avatar image="{{item.avatar}}" size="small" />
-                <text>{{item.author}}</text>
-              </view>
-              <view class="post-likes">
-                <t-icon name="heart" size="28rpx" color="{{item.isLiked ? '#FF4F4F' : '#BBBBBB'}}"/>
-                <text>{{item.likes}}</text>
-              </view>
+            <view class="post-author">
+              <t-avatar image="{{item.avatar}}" size="small" />
+              <text>{{item.author}}</text>
             </view>
           </view>
         </view>
@@ -54,25 +48,20 @@
     </view>
 
     <!-- 活动内容 -->
-    <view class="post-list" wx:if="{{currentTab === 1}}">
-      <view class="post-row">
-        <view wx:for="{{eventPosts}}" wx:key="id" class="post-card" bindtap="navigateToEvent" data-id="{{item.id}}">
-          <image src="{{item.image}}" mode="aspectFill" class="post-image"></image>
-          <view class="post-info">
-            <view class="post-title">{{item.title}}</view>
-            <view class="event-brief">{{item.brief}}</view>
-            <view class="event-location-row">
+    <view class="event-list" wx:if="{{currentTab === 1}}">
+      <view wx:for="{{eventPosts}}" wx:key="id" class="event-card" bindtap="navigateToEvent" data-id="{{item.id}}">
+        <image src="{{item.image}}" mode="aspectFill" class="event-image" />
+        <view class="event-info">
+          <view class="event-title">{{item.title}}</view>
+          <view class="event-brief">{{item.brief}}</view>
+          <view class="event-details">
+            <view class="event-time">
+              <t-icon name="time" size="28rpx" />
+              <text>{{item.time}}</text>
+            </view>
+            <view class="event-location">
               <t-icon name="location" size="28rpx" />
               <text>{{item.location}}</text>
-            </view>
-            <view class="post-footer">
-              <view class="event-time">
-                <t-icon name="time" size="28rpx" />
-                <text>{{item.time}}</text>
-              </view>
-              <view class="event-status">
-                <text class="status-tag {{item.status === '招募中' ? 'status-recruiting' : item.status === '进行中' ? 'status-ongoing' : 'status-finished'}}">{{item.status}}</text>
-              </view>
             </view>
           </view>
         </view>
@@ -101,7 +90,7 @@
                   <text>{{item.author}}</text>
                 </view>
                 <view class="waterfall-likes">
-                  <t-icon name="heart" size="28rpx" color="{{item.isLiked ? '#FF4F4F' : '#BBBBBB'}}"/>
+                  <t-icon name="heart" size="32rpx" color="{{item.isLiked ? '#FF4F4F' : '#BBBBBB'}}"/>
                   <text>{{item.likes}}</text>
                 </view>
               </view>
@@ -127,7 +116,7 @@
                   <text>{{item.author}}</text>
                 </view>
                 <view class="waterfall-likes">
-                  <t-icon name="heart" size="28rpx" color="{{item.isLiked ? '#FF4F4F' : '#BBBBBB'}}"/>
+                  <t-icon name="heart" size="32rpx" color="{{item.isLiked ? '#FF4F4F' : '#BBBBBB'}}"/>
                   <text>{{item.likes}}</text>
                 </view>
               </view>

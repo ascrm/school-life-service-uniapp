@@ -172,39 +172,39 @@
   margin-bottom: 10rpx;
 }
 
+.event-brief {
+  font-size: 24rpx;
+  color: #666;
+  margin-bottom: 16rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
 .event-meta {
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 14rpx;
 }
 
-.event-details {
+.event-time, .event-location {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
+  font-size: 22rpx;
+  color: #999;
+  margin-right: 20rpx;
+}
+
+.event-time text, .event-location text {
+  margin-left: 6rpx;
 }
 
 .event-status {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-}
-
-.status-tag {
-  font-size: 20rpx;
-  padding: 2rpx 10rpx;
-  border-radius: 8rpx;
-  color: #fff;
-}
-
-.status-recruiting {
-  background-color: #FF4F4F;
-}
-
-.status-ongoing {
-  background-color: #07C160;
-}
-
-.status-finished {
-  background-color: #999999;
 }
 
 .event-participants {
@@ -309,43 +309,4 @@
   z-index: 99;
   --td-button-primary-bg-color: #FF4F4F;
   --td-button-primary-border-color: #FF4F4F;
-}
-
-/* 活动特有样式 */
-.event-brief {
-  font-size: 24rpx;
-  color: #666;
-  margin: 10rpx 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-
-.event-time, .event-location {
-  display: flex;
-  align-items: center;
-  font-size: 22rpx;
-  color: #999;
-}
-
-.event-location {
-  margin-left: 16rpx;
-}
-
-.event-time text, .event-location text {
-  margin-left: 6rpx;
-}
-
-.event-location-row {
-  display: flex;
-  align-items: center;
-  font-size: 22rpx;
-  color: #999;
-  margin: 8rpx 0;
-}
-
-.event-location-row text {
-  margin-left: 6rpx;
 }

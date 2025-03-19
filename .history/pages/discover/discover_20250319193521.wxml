@@ -61,17 +61,14 @@
           <view class="post-info">
             <view class="post-title">{{item.title}}</view>
             <view class="event-brief">{{item.brief}}</view>
-            <view class="event-location-row">
-              <t-icon name="location" size="28rpx" />
-              <text>{{item.location}}</text>
-            </view>
             <view class="post-footer">
               <view class="event-time">
                 <t-icon name="time" size="28rpx" />
                 <text>{{item.time}}</text>
               </view>
-              <view class="event-status">
-                <text class="status-tag {{item.status === '招募中' ? 'status-recruiting' : item.status === '进行中' ? 'status-ongoing' : 'status-finished'}}">{{item.status}}</text>
+              <view class="event-location">
+                <t-icon name="location" size="28rpx" />
+                <text>{{item.location}}</text>
               </view>
             </view>
           </view>

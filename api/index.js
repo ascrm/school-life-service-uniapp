@@ -1,12 +1,16 @@
 // api/index.js
 // API统一导出
 
-const user = require('./user');
 const activity = require('./activity');
+const discover = require('./discover');
 const post = require('./post')
+const publish = require('./publish');
+const user = require('./user');
 
 module.exports = {
-  user,
-  activity,
-  post,
+	activity,
+	discover,
+	post,
+	publish,
+	user,
 }; 

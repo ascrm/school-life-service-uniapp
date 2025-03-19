@@ -61,10 +61,6 @@
           <view class="post-info">
             <view class="post-title">{{item.title}}</view>
             <view class="event-brief">{{item.brief}}</view>
-            <view class="event-location-row">
-              <t-icon name="location" size="28rpx" />
-              <text>{{item.location}}</text>
-            </view>
             <view class="post-footer">
               <view class="event-time">
                 <t-icon name="time" size="28rpx" />
