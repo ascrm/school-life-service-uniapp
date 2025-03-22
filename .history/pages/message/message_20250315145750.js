@@ -169,30 +169,21 @@ Page({
 
   // 导航到聊天详情
   navigateToChat(e) {
-    const { id } = e.currentTarget.dataset;
-    // 在实际应用中，这里应该根据消息的id获取对应的用户id，然后跳转到聊天页面
-    const message = this.data.chatMessages.find(msg => msg.id === id);
-    
-    if (!message) return;
-    
-    // 更新消息为已读状态
-    const updatedMessages = this.data.chatMessages.map(msg => {
-      if (msg.id === id) {
-        return { ...msg, unread: 0 };
-      }
-      return msg;
-    });
-    
-    this.setData({
-      chatMessages: updatedMessages
-    });
-    
-    // 检查是否还有未读消息
-    this.checkUnreadStatus();
-    
-    // 跳转到聊天页面
+    const id = e.currentTarget.dataset.id;
     wx.navigateTo({
-      url: `/pages/chat/chat?userId=${id}`
+      url: `../chat/chat?id=${id}`
+    });
+    
+    // 更新已读状态
+    const chatMessages = this.data.chatMessages.map(item => {
+      if (item.id === id) {
+        return { ...item, unread: 0 };
+      }
+      return item;
+    });
+    
+    this.setData({ chatMessages }, () => {
+      this.checkUnreadStatus();
     });
   },
 

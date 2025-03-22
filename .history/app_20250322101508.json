@@ -8,9 +8,7 @@
     "pages/activity/detail",
     "pages/post/detail",
     "pages/login/login",
-    "pages/userSetting/userSetting",
-    "pages/chat/chat",
-    "pages/followers/followers"
+    "pages/userSetting/userSetting"
   ],
   "window": {
     "backgroundTextStyle": "light",

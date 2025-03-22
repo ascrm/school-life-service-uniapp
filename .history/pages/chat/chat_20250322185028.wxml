@@ -1,0 +1,181 @@
+<view class="chat-container">
+  <!-- 关注状态提示 -->
+  <view class="follow-status-bar" wx:if="{{!followStatus.iFollowThem || !followStatus.theyFollowMe}}">
+    <view class="follow-status-text">
+      <block wx:if="{{!followStatus.iFollowThem && !followStatus.theyFollowMe}}">
+        你们还不是互相关注的好友
+      </block>
+      <block wx:elif="{{followStatus.iFollowThem && !followStatus.theyFollowMe}}">
+        你已关注对方，但对方未关注你
+      </block>
+      <block wx:elif="{{!followStatus.iFollowThem && followStatus.theyFollowMe}}">
+        对方已关注你，但你未关注对方
+      </block>
+    </view>
+    <view class="follow-status-action">
+      <block wx:if="{{!followStatus.iFollowThem}}">
+        <t-button size="small" theme="primary" bindtap="followUser">关注</t-button>
+      </block>
+      <block wx:else>
+        <t-button size="small" theme="default" bindtap="unfollowUser">已关注</t-button>
+      </block>
+    </view>
+  </view>
+
+  <!-- 消息限制提示 -->
+  <view class="message-limit-tip" wx:if="{{!canSendFreely}}">
+    <text>单向关注只能发送一条消息，建立互相关注解锁无限畅聊</text>
+  </view>
+
+  <!-- 聊天消息列表 -->
+  <scroll-view class="messages-container" scroll-y scroll-into-view="msg-{{messages.length > 0 ? messages[messages.length-1].id : ''}}" enhanced show-scrollbar="{{false}}">
+    <view class="messages-list">
+      <view 
+        wx:for="{{messages}}" 
+        wx:key="id" 
+        id="msg-{{item.id}}"
+        class="message-item {{item.senderId === currentUser.id ? 'message-sent' : 'message-received'}}"
+        bindlongpress="handleLongPress"
+        data-id="{{item.id}}"
+      >
+        <!-- 头像 -->
+        <view class="message-avatar-container">
+          <image 
+            class="message-avatar" 
+            src="{{item.senderId === currentUser.id ? currentUser.avatar : targetUser.avatar}}"
+            mode="aspectFill"
+          ></image>
+        </view>
+        
+        <!-- 消息内容 -->
+        <view class="message-content-container">
+          <!-- 文本消息 -->
+          <view wx:if="{{item.type === 'text'}}" class="message-bubble {{item.isRecalled ? 'message-recalled' : ''}}">
+            <text class="message-text">{{item.content}}</text>
+          </view>
+          
+          <!-- 图片消息 -->
+          <view wx:elif="{{item.type === 'image'}}" class="message-bubble message-image-container">
+            <image 
+              class="message-image" 
+              src="{{item.content}}" 
+              mode="widthFix" 
+              bindtap="previewImage" 
+              data-src="{{item.content}}"
+            ></image>
+          </view>
+          
+          <!-- 视频消息 -->
+          <view wx:elif="{{item.type === 'video'}}" class="message-bubble message-video-container">
+            <video 
+              class="message-video" 
+              src="{{item.content}}" 
+              show-center-play-btn="{{true}}"
+              object-fit="cover"
+            ></video>
+          </view>
+          
+          <!-- 文件消息 -->
+          <view wx:elif="{{item.type === 'file'}}" class="message-bubble message-file-container">
+            <view class="message-file">
+              <t-icon name="file" size="48rpx" />
+              <text class="message-file-name">{{item.fileName || '文件'}}</text>
+            </view>
+          </view>
+          
+          <!-- 消息状态 -->
+          <view class="message-status" wx:if="{{item.senderId === currentUser.id}}">
+            <text wx:if="{{item.status === 'sending'}}" class="status-sending">发送中...</text>
+            <text wx:elif="{{item.status === 'sent'}}" class="status-sent">已发送</text>
+            <text wx:elif="{{item.status === 'failed'}}" class="status-failed">发送失败</text>
+          </view>
+          
+          <!-- 消息时间 -->
+          <view class="message-time">
+            {{item.formattedTime || '刚刚'}}
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 消息输入区域 -->
+  <view class="input-container">
+    <!-- 表情和媒体选择按钮 -->
+    <view class="input-actions">
+      <t-icon name="emoji" size="48rpx" bindtap="toggleEmojiPicker" />
+      <t-icon name="add-circle" size="48rpx" bindtap="openMediaMenu" />
+    </view>
+    
+    <!-- 文本输入框 -->
+    <view class="input-box">
+      <input 
+        class="message-input" 
+        type="text" 
+        confirm-type="send"
+        value="{{inputContent}}"
+        bindinput="onInputChange"
+        bindconfirm="sendMessage"
+        placeholder="发送消息..."
+        placeholder-class="input-placeholder"
+        cursor-spacing="20"
+      />
+    </view>
+    
+    <!-- 发送按钮 -->
+    <view class="send-button" bindtap="sendMessage">
+      <t-icon name="send" size="48rpx" color="{{inputContent ? '#0052d9' : '#cccccc'}}" />
+    </view>
+  </view>
+
+  <!-- 媒体选择菜单 -->
+  <t-popup visible="{{showMediaMenu}}" placement="bottom" bind:visible-change="closeMediaMenu">
+    <view class="media-menu">
+      <view class="media-menu-title">发送内容</view>
+      <view class="media-menu-options">
+        <view class="media-option" bindtap="chooseAndSendImage">
+          <view class="media-option-icon">
+            <t-icon name="image" size="64rpx" />
+          </view>
+          <view class="media-option-label">图片</view>
+        </view>
+        <view class="media-option" bindtap="chooseAndSendVideo">
+          <view class="media-option-icon">
+            <t-icon name="video" size="64rpx" />
+          </view>
+          <view class="media-option-label">视频</view>
+        </view>
+        <view class="media-option" bindtap="chooseAndSendFile">
+          <view class="media-option-icon">
+            <t-icon name="file" size="64rpx" />
+          </view>
+          <view class="media-option-label">文件</view>
+        </view>
+      </view>
+      <view class="media-menu-cancel" bindtap="closeMediaMenu">取消</view>
+    </view>
+  </t-popup>
+
+  <!-- 表情选择器 -->
+  <view class="emoji-picker" wx:if="{{showEmojiPicker}}">
+    <view class="emoji-grid">
+      <view 
+        wx:for="{{emojiList}}" 
+        wx:key="index" 
+        class="emoji-item"
+        bindtap="selectEmoji"
+        data-emoji="{{item}}"
+      >
+        {{item}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 长按菜单 -->
+  <t-action-sheet
+    visible="{{showActionMenu}}"
+    items="{{actionMenuItems}}"
+    bind:selected="handleActionSelected"
+    bind:visible-change="onActionMenuClose"
+  />
+</view> 
