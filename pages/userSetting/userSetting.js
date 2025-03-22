@@ -1,5 +1,5 @@
 const app = getApp();
-
+const { user } = require('../../api/index')
 Page({
   /**
    * 页面的初始数据
@@ -40,27 +40,39 @@ Page({
     this.loadUserInfo();
   },
   
+    // const userInfo = app.globalData.userInfo || {};
+
   // 加载用户信息
   loadUserInfo() {
-    const userInfo = app.globalData.userInfo || {};
-    
-    // 根据性别设置显示文本
-    let genderText = '保密';
-    if (userInfo.gender === '1') {
-      genderText = '男';
-    } else if (userInfo.gender === '2') {
-      genderText = '女';
-    }
-    
-    this.setData({
-      userInfo: userInfo,
-      genderText: genderText,
-      tempNickname: userInfo.nickName || '',
-      tempBrief: userInfo.brief || '',
-      tempGender: userInfo.gender || '0',
-      tempPhone: userInfo.phone || '',
-      tempEmail: userInfo.email || ''
-    });
+    user.getUserInfoApi()
+      .then(rs => {
+        console.log("获取的用户信息:", rs);
+
+        // 计算性别文本
+        let genderText = '保密';
+        if (rs.gender === '1') {
+          genderText = '男';
+        } else if (rs.gender === '2') {
+          genderText = '女';
+        }
+
+        // 更新数据
+        this.setData({
+          userInfo: rs,
+          genderText: genderText,
+          tempNickname: rs.nickName || '',
+          tempBrief: rs.brief || '',
+          tempGender: rs.gender || '0',
+          tempPhone: rs.phone || '',
+          tempEmail: rs.email || ''
+        });
+
+        // 存储到全局
+        app.globalData.userInfo = rs;
+      })
+      .catch(error => {
+        console.error("获取用户信息失败:", error);
+      });
   },
   
   // 显示昵称编辑弹窗
@@ -229,25 +241,21 @@ Page({
       isSaving: true
     });
     
-    // 在实际应用中，这里应该调用API保存用户信息
-    setTimeout(() => {
-      // 保存到全局数据
-      app.globalData.userInfo = this.data.userInfo;
-      
-      this.setData({
-        isSaving: false
-      });
-      
-      wx.showToast({
-        title: '保存成功',
-        icon: 'success',
-        success: () => {
-          // 延迟返回上一页
-          setTimeout(() => {
-            wx.navigateBack();
-          }, 1500);
-        }
-      });
-    }, 1000);
+    user.updateUserInfoApi(this.data.userInfo);
+     // 保存到全局数据
+     app.globalData.userInfo = this.data.userInfo;
+     this.setData({
+      isSaving: false
+    });
+    wx.showToast({
+      title: '保存成功',
+      icon: 'success',
+      success: () => {
+        // 延迟返回上一页
+        setTimeout(() => {
+          wx.navigateBack();
+        }, 1500);
+      }
+    });
   }
 }) 

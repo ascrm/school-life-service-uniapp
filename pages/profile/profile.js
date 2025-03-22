@@ -128,6 +128,7 @@ Page({
   
   navigateTo(e) {
     const url = e.currentTarget.dataset.url
+    
     wx.navigateTo({
       url: url
     })
@@ -140,12 +141,19 @@ Page({
       return;
     }
     
-    if (app.globalData.userInfo) {
+    // if (app.globalData.userInfo) {
+    //   this.setData({
+    //     userInfo: app.globalData.userInfo,
+    //     hasUserInfo: true
+    //   })
+    // }
+
+    user.getUserInfoApi().then(rs=>{
       this.setData({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
+        userInfo:rs,
       })
-    }
+    })
+  
   },
   
   onShow() {
