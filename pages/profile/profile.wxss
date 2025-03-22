@@ -29,19 +29,17 @@
 }
 
 .user-details {
-  flex: 1;
+	flex: 1;
 }
 
-.user-name-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10rpx;
+.user-nickName {
+	font-size: 36rpx;
+	font-weight: bold;
 }
 
-.nickname {
-  font-size: 36rpx;
-  font-weight: bold;
+.user-brief {
+	margin-top: 14rpx;
+  font-size: 22rpx;
 }
 
 .login-btn {
@@ -57,7 +55,7 @@
   padding: 0;
   --td-button-default-border-color: rgba(255, 255, 255, 0.5);
   --td-button-default-color: #ffffff;
-  --td-button-border-radius: 40rpx;
+	--td-button-border-radius: 40rpx;
 }
 
 .user-id {
@@ -151,4 +149,34 @@
 .menu-arrow {
   color: #ccc;
   font-size: 32rpx;
+}
+
+/* 头像预览弹窗 */
+.avatar-preview-container {
+  width: 600rpx;
+  padding: 30rpx;
+  border-radius: 16rpx;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.preview-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 30rpx;
+  color: #333;
+}
+
+.avatar-preview {
+  width: 300rpx;
+  height: 300rpx;
+  border-radius: 8rpx;
+  margin-bottom: 30rpx;
+}
+
+.preview-button-container {
+  width: 100%;
+  margin-top: 20rpx;
 } 

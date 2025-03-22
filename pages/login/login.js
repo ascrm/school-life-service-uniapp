@@ -53,13 +53,14 @@ Page({
 					// 调用登录接口
           user.loginApi(res.code, userInfo)
             .then( (data) => {
-              // 登录成功，存储用户信息和token
-							wx.setStorageSync('userInfo', userInfo);
-              wx.setStorageSync('token', data);
+							// 登录成功，存储用户信息和token
+							console.log("登陆成功：",data)
+							wx.setStorageSync('userInfo', data.userVo);
+              wx.setStorageSync('token', data.token);
               
               // 更新全局状态
               const app = getApp();
-              app.globalData.userInfo = userInfo;
+              app.globalData.userInfo = data.userVo;
               app.globalData.isLoggedIn = true;
               
               Toast({

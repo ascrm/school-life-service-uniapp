@@ -6,7 +6,11 @@ const loginApi = (code, userInfo) => http.post(`/user/wx/login?code=${code}`, us
 //退出登录
 const logoutApi = () => http.post('/user/logout');
 
+//修改用户数据
+const updateUserInfoApi=( userInfo )=>http.post("/user",userInfo);
+
 module.exports = {
   loginApi,
-  logoutApi,
+	logoutApi,
+	updateUserInfoApi,
 }; 

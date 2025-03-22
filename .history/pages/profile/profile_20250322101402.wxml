@@ -4,7 +4,7 @@
     <view class="user-info-container">
       <t-avatar 
         class="avatar" 
-        image="{{userInfo.avatar}}"
+        image="{{userInfo.avatarUrl}}"
         size="large"
         badge-props="{{ { count: 0, dot: true } }}"
         bindtap="previewAvatar"
@@ -159,7 +159,7 @@
   <t-popup visible="{{showAvatarPreview}}" bind:visible-change="closeAvatarPreview" placement="center">
     <view class="avatar-preview-container">
       <view class="preview-title">头像预览</view>
-      <image src="{{userInfo.avatar}}" mode="aspectFit" class="avatar-preview"></image>
+      <image src="{{userInfo.avatarUrl}}" mode="aspectFit" class="avatar-preview"></image>
       <view class="preview-button-container">
         <t-button theme="primary" size="large" block bindtap="chooseAvatar">修改头像</t-button>
       </view>

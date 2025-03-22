@@ -44,7 +44,7 @@
                 <view>{{item.userVo.nickName}}</view>
               </view>
               <view class="post-likes">
-                <t-icon catch:tap="onClickLikes" data-id="{{item.id}}" name="heart" size="28rpx" color="{{item.isLiked ? '#FF4F4F' : '#BBBBBB'}}"/>
+                <t-icon style="width: 50rpx;background-color: red;" catch:tap="onClickLikes" data-id="{{item.id}}" name="heart" size="28rpx" color="{{item.isLiked ? '#FF4F4F' : '#BBBBBB'}}"/>
                 <text>{{item.likes}}</text>
               </view>
             </view>
@@ -101,7 +101,7 @@
                   <text>{{item.author}}</text>
                 </view>
                 <view class="waterfall-likes">
-                  <t-icon name="heart" catch:tap="onClickLikes" data-id="{{item.id}}" size="28rpx" color="{{item.isLiked ? '#FF4F4F' : '#BBBBBB'}}"/>
+                  <t-icon name="heart" size="28rpx" color="{{item.isLiked ? '#FF4F4F' : '#BBBBBB'}}"/>
                   <text>{{item.likes}}</text>
                 </view>
               </view>
@@ -127,7 +127,7 @@
                   <text>{{item.author}}</text>
                 </view>
                 <view class="waterfall-likes">
-                  <t-icon name="heart" catch:tap="onClickLikes" data-id="{{item.id}}" size="28rpx" color="{{item.isLiked ? '#FF4F4F' : '#BBBBBB'}}"/>
+                  <t-icon name="heart" size="28rpx" color="{{item.isLiked ? '#FF4F4F' : '#BBBBBB'}}"/>
                   <text>{{item.likes}}</text>
                 </view>
               </view>

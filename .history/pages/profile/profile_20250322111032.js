@@ -105,19 +105,33 @@ Page({
       app.globalData.userInfo = userInfo;
       wx.setStorageSync('userInfo', userInfo);
       
-      // 调用API更新用户信息
-      return user.updateUserInfoApi(userInfo);
-    }).then(res => {
-      console.log("更新成功", res);
-      wx.showToast({
-        title: '头像更新成功',
-        icon: 'success',
-        duration: 2000
+      // 调用云函数更新头像
+      wx.cloud.callFunction({
+        name: 'updateUserAvatar',
+        data: {
+          avatarUrl: url
+        },
+        success: (res) => {
+          console.log("更新成功", res)
+          wx.showToast({
+            title: '头像更新成功',
+            icon: 'success',
+            duration: 2000
+          });
+        },
+        fail: (error) => {
+          console.error("更新失败", error)
+          wx.showToast({
+            title: '头像更新失败',
+            icon: 'none',
+            duration: 2000
+          });
+        }
       });
     }).catch(error => {
-      console.error("操作失败", error);
+      console.error("上传头像失败", error);
       wx.showToast({
-        title: '操作失败',
+        title: '上传头像失败',
         icon: 'none',
         duration: 2000
       });

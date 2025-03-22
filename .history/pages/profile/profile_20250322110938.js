@@ -53,77 +53,74 @@ Page({
     });
   },
   
-  // 选择并上传头像
+  // 选择头像
   chooseAvatar() {
-    const that = this;
     wx.chooseMedia({
       count: 1,
       mediaType: ['image'],
       sourceType: ['album', 'camera'],
-      camera: 'back',
-      success: function(res) {
-        console.log('选择照片成功', res);
+      camera: 'front',
+      success: (res) => {
         const tempFilePath = res.tempFiles[0].tempFilePath;
+        // 显示加载中提示
         wx.showLoading({
           title: '上传中...',
           mask: true
         });
-        that.uploadAvatar(tempFilePath);
-      },
-      fail: function(error) {
-        console.error('选择照片失败', error);
-        wx.showToast({
-          title: '选择照片失败',
-          icon: 'none'
-        });
+        // 上传头像到服务器
+        this.uploadAvatar(tempFilePath);
       }
-    });
-    this.setData({
-      showAvatarPreview: false // 关闭预览弹窗
     });
   },
   
-  // 上传头像
+  // 上传头像到服务器
   uploadAvatar(filePath) {
-    console.log("上传头像中")
-    
+    // 上传单个文件，不需要使用Promise.all
     publish.uploadImageApi({
       path: filePath,
-      type: 'avatar'
-    }).then(url => {
-      console.log("头像地址：", url)
-      // 更新本地头像
-      const userInfo = { ...this.data.userInfo };
-      userInfo.avatar = url;
-      
-      this.setData({
-        userInfo: userInfo,
-        showAvatarPreview: false // 关闭预览弹窗
+      type: 'image'
+    })
+      .then(url => {
+        console.log("头像地址：", url);
+        if (!url) {
+          wx.showToast({
+            title: '上传失败',
+            icon: 'error'
+          });
+          return;
+        }
+        
+        // 更新本地头像
+        const userInfo = { ...this.data.userInfo };
+        userInfo.avatar = url;
+        
+        this.setData({
+          userInfo: userInfo,
+          showAvatarPreview: false // 关闭预览弹窗
+        });
+        
+        // 更新全局数据
+        app.globalData.userInfo = userInfo;
+        wx.setStorageSync('userInfo', userInfo);
+        
+        // 调用更新用户信息API
+        return user.updateUserInfoApi(userInfo);
+      })
+      .then(res => {
+        wx.hideLoading();
+        wx.showToast({
+          title: '头像已更新',
+          icon: 'success'
+        });
+      })
+      .catch(err => {
+        console.error('更新头像失败:', err);
+        wx.hideLoading();
+        wx.showToast({
+          title: '更新失败',
+          icon: 'error'
+        });
       });
-      
-      // 更新全局数据和本地存储
-      app.globalData.userInfo = userInfo;
-      wx.setStorageSync('userInfo', userInfo);
-      
-      // 调用API更新用户信息
-      return user.updateUserInfoApi(userInfo);
-    }).then(res => {
-      console.log("更新成功", res);
-      wx.showToast({
-        title: '头像更新成功',
-        icon: 'success',
-        duration: 2000
-      });
-    }).catch(error => {
-      console.error("操作失败", error);
-      wx.showToast({
-        title: '操作失败',
-        icon: 'none',
-        duration: 2000
-      });
-    }).finally(() => {
-      wx.hideLoading();
-    });
   },
   
   navigateTo(e) {

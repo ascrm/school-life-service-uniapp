@@ -1,0 +1,110 @@
+<!--pages/userSetting/userSetting.wxml-->
+<view class="setting-container">
+  <view class="page-title">编辑资料</view>
+  
+  <view class="setting-form">
+    <!-- 昵称 -->
+    <t-cell title="昵称" arrow hover note="{{userInfo.nickName || '设置昵称'}}" bind:click="showNicknameDialog" t-class="custom-cell"/>
+    
+    <!-- 个人简介 -->
+    <t-cell title="个人简介" arrow hover note="{{userInfo.brief || '未设置'}}" bind:click="showBriefDialog" t-class="custom-cell"/>
+    
+    <!-- 性别 -->
+    <t-cell title="性别" arrow hover note="{{genderText}}" bind:click="showGenderPicker" t-class="custom-cell"/>
+    
+    <!-- 手机号 -->
+    <t-cell title="手机号" arrow hover note="{{userInfo.phone || '未绑定'}}" bind:click="showPhoneDialog" t-class="custom-cell"/>
+    
+    <!-- 邮箱 -->
+    <t-cell title="邮箱" arrow hover note="{{userInfo.email || '未设置'}}" bind:click="showEmailDialog" t-class="custom-cell"/>
+  </view>
+  
+  <!-- 保存按钮 -->
+  <view class="btn-container">
+    <t-button theme="primary" size="large" block bindtap="saveUserInfo" loading="{{isSaving}}">保存</t-button>
+  </view>
+  
+  <!-- 昵称编辑弹窗 -->
+  <t-dialog
+    visible="{{showNicknameDlg}}"
+    title="修改昵称"
+    confirm-btn="确认"
+    cancel-btn="取消"
+    bind:confirm="confirmNickname"
+    bind:cancel="cancelNickname"
+  >
+    <t-input
+      slot="content"
+      model:value="{{tempNickname}}"
+      placeholder="请输入昵称"
+      maxlength="20"
+    />
+  </t-dialog>
+  
+  <!-- 个人简介编辑弹窗 -->
+  <t-dialog
+    visible="{{showBriefDlg}}"
+    title="修改个人简介"
+    confirm-btn="确认"
+    cancel-btn="取消"
+    bind:confirm="confirmBrief"
+    bind:cancel="cancelBrief"
+  >
+    <t-textarea
+      slot="content"
+      model:value="{{tempBrief}}"
+      placeholder="请输入个人简介"
+      maxlength="100"
+      disableDefaultPadding="{{true}}"
+      indicator
+    />
+  </t-dialog>
+  
+  <!-- 手机号编辑弹窗 -->
+  <t-dialog
+    visible="{{showPhoneDlg}}"
+    title="修改手机号"
+    confirm-btn="确认"
+    cancel-btn="取消"
+    bind:confirm="confirmPhone"
+    bind:cancel="cancelPhone"
+  >
+    <t-input
+      slot="content"
+      model:value="{{tempPhone}}"
+      placeholder="请输入手机号"
+      type="number"
+      maxlength="11"
+    />
+  </t-dialog>
+  
+  <!-- 邮箱编辑弹窗 -->
+  <t-dialog
+    visible="{{showEmailDlg}}"
+    title="修改邮箱"
+    confirm-btn="确认"
+    cancel-btn="取消"
+    bind:confirm="confirmEmail"
+    bind:cancel="cancelEmail"
+  >
+    <t-input
+      slot="content"
+      model:value="{{tempEmail}}"
+      placeholder="请输入邮箱"
+      type="text"
+      maxlength="50"
+    />
+  </t-dialog>
+  
+  <!-- 性别选择器 -->
+  <t-picker
+    visible="{{showGenderPicker}}"
+    title="选择性别"
+    cancelBtn="取消"
+    confirmBtn="确认"
+    bindcancel="cancelGender"
+    bindconfirm="confirmGender"
+  >
+    <t-picker-item options="{{genderOptions}}"></t-picker-item>
+  </t-picker>
+</view> 

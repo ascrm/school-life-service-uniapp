@@ -4,10 +4,11 @@
     "pages/discover/discover",
     "pages/publish/publish",
     "pages/message/message",
-		"pages/profile/profile",
-		"pages/activity/detail",
-		"pages/post/detail",
-		"pages/login/login"
+    "pages/profile/profile",
+    "pages/activity/detail",
+    "pages/post/detail",
+    "pages/login/login",
+    "pages/userSetting/userSetting"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -35,7 +36,7 @@
         "selectedIconPath": "images/tabbar/discover_selected.png"
       },
       {
-        "pagePath": "pages/publish/publish", 
+        "pagePath": "pages/publish/publish",
         "text": "发布",
         "iconPath": "images/tabbar/publish.png",
         "selectedIconPath": "images/tabbar/publish_selected.png"

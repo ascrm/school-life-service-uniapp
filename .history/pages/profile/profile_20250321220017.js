@@ -1,8 +1,6 @@
 const defaultAvatarUrl = 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0'
 const app = getApp()
 
-const {user,publish} = require("../../api/index")
-
 Page({
   data: {
     userInfo: null,
@@ -36,7 +34,7 @@ Page({
   
   // 预览头像
   previewAvatar() {
-    if (!this.data.userInfo || !this.data.userInfo.avatar) {
+    if (!this.data.userInfo || !this.data.userInfo.avatarUrl) {
       return;
     }
     
@@ -53,77 +51,57 @@ Page({
     });
   },
   
-  // 选择并上传头像
+  // 选择头像
   chooseAvatar() {
-    const that = this;
     wx.chooseMedia({
       count: 1,
       mediaType: ['image'],
       sourceType: ['album', 'camera'],
-      camera: 'back',
-      success: function(res) {
-        console.log('选择照片成功', res);
+      camera: 'front',
+      success: (res) => {
         const tempFilePath = res.tempFiles[0].tempFilePath;
-        wx.showLoading({
-          title: '上传中...',
-          mask: true
+        
+        // 更新本地头像
+        const userInfo = { ...this.data.userInfo, avatarUrl: tempFilePath };
+        this.setData({
+          userInfo: userInfo,
+          showAvatarPreview: false // 关闭预览弹窗
         });
-        that.uploadAvatar(tempFilePath);
-      },
-      fail: function(error) {
-        console.error('选择照片失败', error);
-        wx.showToast({
-          title: '选择照片失败',
-          icon: 'none'
-        });
+        
+        // 更新全局数据
+        app.globalData.userInfo = userInfo;
+        
+        // 上传头像到服务器（实际项目中需要实现）
+        this.uploadAvatar(tempFilePath);
       }
-    });
-    this.setData({
-      showAvatarPreview: false // 关闭预览弹窗
     });
   },
   
-  // 上传头像
+  // 上传头像到服务器
   uploadAvatar(filePath) {
-    console.log("上传头像中")
-    
-    publish.uploadImageApi({
-      path: filePath,
-      type: 'avatar'
-    }).then(url => {
-      console.log("头像地址：", url)
-      // 更新本地头像
-      const userInfo = { ...this.data.userInfo };
-      userInfo.avatar = url;
-      
-      this.setData({
-        userInfo: userInfo,
-        showAvatarPreview: false // 关闭预览弹窗
-      });
-      
-      // 更新全局数据和本地存储
-      app.globalData.userInfo = userInfo;
-      wx.setStorageSync('userInfo', userInfo);
-      
-      // 调用API更新用户信息
-      return user.updateUserInfoApi(userInfo);
-    }).then(res => {
-      console.log("更新成功", res);
-      wx.showToast({
-        title: '头像更新成功',
-        icon: 'success',
-        duration: 2000
-      });
-    }).catch(error => {
-      console.error("操作失败", error);
-      wx.showToast({
-        title: '操作失败',
-        icon: 'none',
-        duration: 2000
-      });
-    }).finally(() => {
-      wx.hideLoading();
+    // 这里应该实现上传逻辑
+    wx.showToast({
+      title: '头像已更新',
+      icon: 'success'
     });
+    
+    // 实际项目中，应该调用上传API：
+    // wx.uploadFile({
+    //   url: 'your-upload-api',
+    //   filePath: filePath,
+    //   name: 'avatar',
+    //   success: (res) => {
+    //     const data = JSON.parse(res.data);
+    //     if (data.code === 200) {
+    //       // 更新头像URL为服务器返回的URL
+    //       const userInfo = { ...this.data.userInfo, avatarUrl: data.data.url };
+    //       this.setData({
+    //         userInfo: userInfo
+    //       });
+    //       app.globalData.userInfo = userInfo;
+    //     }
+    //   }
+    // });
   },
   
   navigateTo(e) {
@@ -134,12 +112,6 @@ Page({
   },
   
   onLoad() {
-    // 检查登录状态
-    if (!app.globalData.isLoggedIn) {
-      this.redirectToLogin();
-      return;
-    }
-    
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -149,22 +121,10 @@ Page({
   },
   
   onShow() {
-    // 检查登录状态
-    if (!app.globalData.isLoggedIn) {
-      this.redirectToLogin();
-      return;
-    }
-    
+    const app = getApp();
     this.setData({
       isLoggedIn: app.globalData.isLoggedIn,
       userInfo: app.globalData.userInfo
-    });
-  },
-  
-  // 重定向到登录页面
-  redirectToLogin() {
-    wx.navigateTo({
-      url: '/pages/login/login'
     });
   },
   
