@@ -1,4 +1,4 @@
-const http = require('./request')
+const http = require('../utils/request')
 
 //查询所有分类
 const getAllCategoriesApi=()=> http.get('/categories',{},false)

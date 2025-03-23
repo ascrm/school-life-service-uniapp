@@ -27,9 +27,6 @@ const followUserApi=(userId)=>http.post(`/follow/${userId}`);
 //取消关注用户
 const unfollowUserApi=(userId)=>http.delete(`/follow/${userId}`);
 
-//切换关注状态（关注/取消关注）
-const toggleFollowApi=(followeeId)=>http.post(`/follow/change?followeeId=${followeeId}`);
-
 module.exports = {
   loginApi,
 	logoutApi,
@@ -39,6 +36,5 @@ module.exports = {
 	getFolloweesApi,
 	getMutualsApi,
   followUserApi,
-  unfollowUserApi,
-  toggleFollowApi
+  unfollowUserApi
 }; 

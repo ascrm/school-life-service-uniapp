@@ -1,1 +1,1 @@
-const http = require('./request');
+const http = require('../utils/request');

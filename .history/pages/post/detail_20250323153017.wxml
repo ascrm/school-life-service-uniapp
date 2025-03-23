@@ -31,12 +31,21 @@
       autoplay="{{false}}"
       duration="{{500}}"
       interval="{{5000}}"
-      list="{{postImages}}"
       navigation="{{ { type: 'dots' } }}"
-      image-mode="aspectFit"
-      height="600rpx"
       class="post-swiper"
+      t-class="custom-swiper"
     >
+      <t-swiper-item wx:for="{{postImages}}" wx:key="index">
+        <view class="swiper-item-container">
+          <image 
+            src="{{item.image || item}}" 
+            mode="widthFix" 
+            class="swiper-image" 
+            bindtap="previewImage" 
+            data-index="{{index}}"
+          />
+        </view>
+      </t-swiper-item>
     </t-swiper>
 
     <!-- 文章标题 -->

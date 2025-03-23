@@ -34,7 +34,7 @@
       list="{{postImages}}"
       navigation="{{ { type: 'dots' } }}"
       image-mode="aspectFit"
-      height="600rpx"
+      height="500rpx"
       class="post-swiper"
     >
     </t-swiper>

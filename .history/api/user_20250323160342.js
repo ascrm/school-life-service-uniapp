@@ -13,22 +13,13 @@ const updateUserInfoApi=( params )=>http.post("/user",params);
 const getUserInfoApi=()=>http.get('/user');
 
 //获取粉丝列表
-const getFollowersApi=()=>http.get('/follow/fans');
+const getFollowersApi=()=>{}
 
 //获取关注列表
-const getFolloweesApi=()=>http.get('/follow/followees');
+const getFolloweesApi=()=>{}
 
 //获取互关列表
-const getMutualsApi=()=>http.get('/follow/mutual');
-
-//关注用户
-const followUserApi=(userId)=>http.post(`/follow/${userId}`);
-
-//取消关注用户
-const unfollowUserApi=(userId)=>http.delete(`/follow/${userId}`);
-
-//切换关注状态（关注/取消关注）
-const toggleFollowApi=(followeeId)=>http.post(`/follow/change?followeeId=${followeeId}`);
+const getMutualsApi=()=>{}
 
 module.exports = {
   loginApi,
@@ -38,7 +29,4 @@ module.exports = {
 	getFollowersApi,
 	getFolloweesApi,
 	getMutualsApi,
-  followUserApi,
-  unfollowUserApi,
-  toggleFollowApi
 }; 

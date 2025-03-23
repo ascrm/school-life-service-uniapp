@@ -45,6 +45,11 @@ Page({
     this.loadList(this.data.currentTab);
   },
 
+  onReachBottom: function () {
+    // API没有分页功能，此处暂不实现加载更多功能
+    // 如果后端支持分页，可以在此处添加加载更多逻辑
+  },
+
   onPullDownRefresh: function () {
     this.refreshList(this.data.currentTab);
   },
@@ -78,6 +83,7 @@ Page({
     
     let apiCall;
     let dataKey;
+    
     // 根据标签页选择不同的API调用
     if (tabIndex === 0) {
       // 关注列表
@@ -94,17 +100,16 @@ Page({
     }
     
     // 调用API
-    apiCall.then(data => {
+    apiCall.then(res => {
       // 处理API返回的数据
-      const list = this.processUserList(data || []);
+      const list = this.processUserList(res.data || []);
+      
       this.setData({
         [dataKey]: list,
         loading: false,
         isEmpty: list.length === 0,
         hasMore: false // 当前API不支持分页，所以没有更多数据
-			});
-			
-			
+      });
       
       wx.stopPullDownRefresh();
     }).catch(err => {
@@ -125,25 +130,17 @@ Page({
 
   // 处理用户列表数据
   processUserList: function(list) {
-    // 确保list是数组
-    if (!Array.isArray(list)) {
-      console.error('列表数据不是数组:', list);
-      return [];
-    }
-    
     return list.map(user => {
-      // 确保必要的字段存在
-      if (!user) return null;
-      
       return {
-        id: user.id || 0,
-        nickName: user.nickName || '未知用户',
-        avatar: user.avatar || '/images/default-avatar.png',
+        id: user.id,
+        userId: user.id.toString(),
+        nickName: user.nickName,
+        avatar: user.avatar,
         isFollowing: true, // 关注列表中的用户默认已关注
         isFollower: this.data.currentTab === 1 || this.data.currentTab === 2, // 粉丝和互关列表中的用户默认为粉丝
         signature: user.signature || ''
       };
-    }).filter(user => user !== null); // 过滤掉无效的用户数据
+    });
   },
 
   // 刷新列表数据
@@ -177,8 +174,8 @@ Page({
       title: '处理中...',
     });
     
-    // 调用关注切换API
-    user.toggleFollowApi(userId).then((res) => {
+    // 调用关注API
+    user.followUserApi(userId).then(() => {
       wx.hideLoading();
       
       wx.showToast({
@@ -212,8 +209,8 @@ Page({
             title: '处理中...',
           });
           
-          // 调用关注切换API
-          user.toggleFollowApi(userId).then((res) => {
+          // 调用取消关注API
+          user.unfollowUserApi(userId).then(() => {
             wx.hideLoading();
             
             wx.showToast({
@@ -246,13 +243,13 @@ Page({
       // 关注列表，取消关注后从列表中移除
       if (!isFollowing) {
         this.setData({
-          followingList: followingList.filter(user => user.id.toString() !== userId.toString())
+          followingList: followingList.filter(user => user.userId !== userId)
         });
       }
     } else if (currentTab === 1) {
       // 粉丝列表，更新关注状态
       const updatedList = followersList.map(user => {
-        if (user.id.toString() === userId.toString()) {
+        if (user.userId === userId) {
           return { ...user, isFollowing };
         }
         return user;
@@ -264,8 +261,8 @@ Page({
       
       // 如果关注了粉丝，应将该用户添加到互关列表
       if (isFollowing) {
-        const user = followersList.find(u => u.id.toString() === userId.toString());
-        if (user && !mutualList.some(u => u.id.toString() === userId.toString())) {
+        const user = followersList.find(u => u.userId === userId);
+        if (user && !mutualList.some(u => u.userId === userId)) {
           this.setData({
             mutualList: [...mutualList, { ...user, isFollowing: true }]
           });
@@ -275,11 +272,11 @@ Page({
       // 互关列表，取消关注后从列表中移除
       if (!isFollowing) {
         this.setData({
-          mutualList: mutualList.filter(user => user.id.toString() !== userId.toString())
+          mutualList: mutualList.filter(user => user.userId !== userId)
         });
         
         // 将用户添加到粉丝列表
-        const user = mutualList.find(u => u.id.toString() === userId.toString());
+        const user = mutualList.find(u => u.userId === userId);
         if (user) {
           this.setData({
             followersList: [...followersList, { ...user, isFollowing: false }]

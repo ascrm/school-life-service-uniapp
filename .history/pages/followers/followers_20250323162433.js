@@ -45,6 +45,11 @@ Page({
     this.loadList(this.data.currentTab);
   },
 
+  onReachBottom: function () {
+    // API没有分页功能，此处暂不实现加载更多功能
+    // 如果后端支持分页，可以在此处添加加载更多逻辑
+  },
+
   onPullDownRefresh: function () {
     this.refreshList(this.data.currentTab);
   },
@@ -78,6 +83,7 @@ Page({
     
     let apiCall;
     let dataKey;
+    
     // 根据标签页选择不同的API调用
     if (tabIndex === 0) {
       // 关注列表
@@ -94,17 +100,17 @@ Page({
     }
     
     // 调用API
-    apiCall.then(data => {
+    apiCall.then(res => {
       // 处理API返回的数据
-      const list = this.processUserList(data || []);
+      console.log('API返回数据:', res);
+      const list = this.processUserList(res.data || []);
+      
       this.setData({
         [dataKey]: list,
         loading: false,
         isEmpty: list.length === 0,
         hasMore: false // 当前API不支持分页，所以没有更多数据
-			});
-			
-			
+      });
       
       wx.stopPullDownRefresh();
     }).catch(err => {

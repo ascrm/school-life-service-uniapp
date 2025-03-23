@@ -205,7 +205,6 @@ Page({
   // 跳转到关注/粉丝/互关列表页面
   navigateToFollowers: function(e) {
     const tab = e.currentTarget.dataset.tab || 0;
-    
     wx.navigateTo({
       url: `/pages/followers/followers?tab=${tab}`
     });

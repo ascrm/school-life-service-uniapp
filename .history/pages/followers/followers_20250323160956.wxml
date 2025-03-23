@@ -24,7 +24,7 @@
         class="user-item"
       >
         <!-- 用户头像和信息 -->
-        <view class="user-info" bindtap="navigateToUserProfile" data-user-id="{{item.id}}">
+        <view class="user-info" bindtap="navigateToUserProfile" data-user-id="{{item.userId}}">
           <image class="user-avatar" src="{{item.avatar}}" mode="aspectFill"></image>
           <view class="user-details">
             <view class="user-name">{{item.nickName}}</view>
@@ -42,7 +42,7 @@
               icon="chat"
               variant="outline"
               bindtap="navigateToChat"
-              data-user-id="{{item.id}}"
+              data-user-id="{{item.userId}}"
               t-class="chat-btn"
             >私信</t-button>
             
@@ -53,7 +53,7 @@
               icon="{{item.isFollowing ? 'check' : 'add'}}"
               variant="{{item.isFollowing ? 'outline' : 'base'}}"
               bindtap="{{item.isFollowing ? 'unfollowUser' : 'followUser'}}"
-              data-user-id="{{item.id}}"
+              data-user-id="{{item.userId}}"
               data-list-type="following"
               t-class="follow-btn"
             >{{item.isFollowing ? '已关注' : '关注'}}</t-button>
@@ -88,7 +88,7 @@
         class="user-item"
       >
         <!-- 用户头像和信息 -->
-        <view class="user-info" bindtap="navigateToUserProfile" data-user-id="{{item.id}}">
+        <view class="user-info" bindtap="navigateToUserProfile" data-user-id="{{item.userId}}">
           <image class="user-avatar" src="{{item.avatar}}" mode="aspectFill"></image>
           <view class="user-details">
             <view class="user-name">{{item.nickName}}</view>
@@ -106,7 +106,7 @@
               icon="chat"
               variant="outline"
               bindtap="navigateToChat"
-              data-user-id="{{item.id}}"
+              data-user-id="{{item.userId}}"
               t-class="chat-btn"
             >私信</t-button>
             
@@ -117,7 +117,7 @@
               icon="{{item.isFollowing ? 'check' : 'add'}}"
               variant="{{item.isFollowing ? 'outline' : 'base'}}"
               bindtap="{{item.isFollowing ? 'unfollowUser' : 'followUser'}}"
-              data-user-id="{{item.id}}"
+              data-user-id="{{item.userId}}"
               data-list-type="followers"
               t-class="follow-btn"
             >{{item.isFollowing ? '已关注' : '关注'}}</t-button>
@@ -152,7 +152,7 @@
         class="user-item"
       >
         <!-- 用户头像和信息 -->
-        <view class="user-info" bindtap="navigateToUserProfile" data-user-id="{{item.id}}">
+        <view class="user-info" bindtap="navigateToUserProfile" data-user-id="{{item.userId}}">
           <image class="user-avatar" src="{{item.avatar}}" mode="aspectFill"></image>
           <view class="user-details">
             <view class="user-name">{{item.nickName}}</view>
@@ -170,7 +170,7 @@
               icon="chat"
               variant="outline"
               bindtap="navigateToChat"
-              data-user-id="{{item.id}}"
+              data-user-id="{{item.userId}}"
               t-class="chat-btn"
             >私信</t-button>
             
@@ -181,7 +181,7 @@
               icon="check"
               variant="outline"
               bindtap="unfollowUser"
-              data-user-id="{{item.id}}"
+              data-user-id="{{item.userId}}"
               data-list-type="mutual"
               t-class="follow-btn"
             >互相关注</t-button>

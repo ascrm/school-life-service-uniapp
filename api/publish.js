@@ -1,4 +1,4 @@
-const http = require('./request')
+const http = require('../utils/request')
 
 // 上传单个文件
 const uploadImageApi = (file) => {

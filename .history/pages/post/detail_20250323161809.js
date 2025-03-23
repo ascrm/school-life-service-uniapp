@@ -247,38 +247,15 @@ Page({
   // 添加关注作者功能
   followAuthor() {
     const isFollowed = !this.data.postData.isFollowed;
-    const authorId = this.data.postData.userVo.id;
     
-    // 显示加载中
-    wx.showLoading({
-      title: '处理中...'
+    this.setData({
+      'postData.isFollowed': isFollowed
     });
     
-    // 调用关注切换API
-    user.toggleFollowApi(authorId).then((res) => {
-      wx.hideLoading();
-      
-      // 更新UI状态
-      this.setData({
-        'postData.isFollowed': isFollowed
-      });
-      
-      // 显示提示
-      Toast({
-        context: this,
-        selector: '#t-toast',
-        message: isFollowed ? '已关注作者' : '已取消关注',
-      });
-    }).catch(err => {
-      wx.hideLoading();
-      console.error('操作失败:', err);
-      
-      Toast({
-        context: this,
-        selector: '#t-toast',
-        message: '操作失败，请稍后重试',
-        theme: 'error'
-      });
+    Toast({
+      context: this,
+      selector: '#t-toast',
+      message: isFollowed ? '已关注作者' : '已取消关注',
     });
   }
 }); 

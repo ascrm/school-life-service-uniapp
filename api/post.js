@@ -1,4 +1,4 @@
-const http = require('./request')
+const http = require('../utils/request')
 
 //帖子点赞
 const addLikePostApi=(params) => http.get("/post/like",params)

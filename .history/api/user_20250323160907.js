@@ -21,15 +21,6 @@ const getFolloweesApi=()=>http.get('/follow/followees');
 //获取互关列表
 const getMutualsApi=()=>http.get('/follow/mutual');
 
-//关注用户
-const followUserApi=(userId)=>http.post(`/follow/${userId}`);
-
-//取消关注用户
-const unfollowUserApi=(userId)=>http.delete(`/follow/${userId}`);
-
-//切换关注状态（关注/取消关注）
-const toggleFollowApi=(followeeId)=>http.post(`/follow/change?followeeId=${followeeId}`);
-
 module.exports = {
   loginApi,
 	logoutApi,
@@ -38,7 +29,4 @@ module.exports = {
 	getFollowersApi,
 	getFolloweesApi,
 	getMutualsApi,
-  followUserApi,
-  unfollowUserApi,
-  toggleFollowApi
 }; 
