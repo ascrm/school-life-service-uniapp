@@ -17,9 +17,7 @@ Page({
       "运动健身", "考研经验", "社团活动", "实习经历", 
       "考证干货", "学习笔记", "校园剧本杀", "自习小组"
     ],
-    recommendPosts: [], // 推荐内容，改为空数组
-    eventPosts: [], // 活动内容，改为空数组
-    categoryPosts: [], // 其他分类内容，改为空数组
+    posts: [], // 统一使用一个数组存储所有类型的内容
     
     // 分页加载相关
 		earliestDateTimes: {}, // 存储每个分类的最早时间，用于分页加载
@@ -150,34 +148,34 @@ Page({
     // 获取最早时间，用于分页加载
     const earliestDateTime = isLoadMore ? earliestDateTimes[categoryId] : null;
     
-    discover.getPostsByCategoryIdApi(categoryId, earliestDateTime)
+    discover.getPostsByCategoryIdApi({categoryId, earliestDateTime})
       .then(res => {
         if (res && Array.isArray(res)) {
           let posts = [];
-          let dataKey = '';
           
-          // 根据tabIndex确定数据保存的位置
-          if (tabIndex === 0) {
-            dataKey = 'recommendPosts';
-          } else if (tabIndex === 1) {
-            dataKey = 'eventPosts';
-          } else {
-            dataKey = 'categoryPosts';
-          }
+          // 为每个内容添加类型标记，便于跳转到相应详情页
+          const processedPosts = res.map(item => {
+            // 根据数据特征判断内容类型
+            if(item.time && item.location && item.status) {
+              item.type = 'activity'; // 活动类型
+            } else {
+              item.type = 'post'; // 普通帖子类型
+            }
+            return item;
+          });
           
           // 如果是加载更多，则拼接数据
           if (isLoadMore) {
-            posts = [...this.data[dataKey], ...res];
+            posts = [...this.data.posts, ...processedPosts];
           } else {
-            posts = res;
+            posts = processedPosts;
           }
           
           const updateData = {
             isLoading: false,
             hasMore: res.length >= 30, // 如果返回的数据不足30条，认为没有更多数据
+            posts: posts
           };
-          
-          updateData[dataKey] = posts;
           
           // 如果有数据，更新最早时间
           if (res.length > 0) {
@@ -264,15 +262,8 @@ Page({
       hasMore: true // 重置加载更多状态
     });
     
-    // 如果切换到的分类没有数据，则加载数据
-    if (newTabIndex === 0 && this.data.recommendPosts.length === 0) {
-      this.loadPostsByCategory(newTabIndex);
-    } else if (newTabIndex === 1 && this.data.eventPosts.length === 0) {
-      this.loadPostsByCategory(newTabIndex);
-    } else if (newTabIndex > 1 && this.data.categoryPosts.length === 0) {
-      this.loadPostsByCategory(newTabIndex);
-    } else if (currentTab !== newTabIndex) {
-      // 切换到不同的分类，重新加载数据
+    // 切换到不同的分类，重新加载数据
+    if (currentTab !== newTabIndex) {
       this.loadPostsByCategory(newTabIndex);
     }
   },
@@ -287,42 +278,32 @@ Page({
 	
 	//点赞实现
 	onClickLikes(e){
-	
-		const { recommendPosts } = this.data
-		const id = e.currentTarget.dataset.id;
-		post.addLikePostApi(id);
-		
-		recommendPosts.forEach(item=>{
-			if(item.id==id) {
-				item.isLiked=!item.isLiked
-				item.likes = item.isLiked ? item.likes+1 : item.likes-1
-			}
-		})
+    const { posts } = this.data;
+    const id = e.currentTarget.dataset.id;
+    post.addLikePostApi(id);
+    
+    const updatedPosts = posts.map(item => {
+      if(item.id == id) {
+        return {
+          ...item,
+          isLiked: !item.isLiked,
+          likes: item.isLiked ? item.likes - 1 : item.likes + 1
+        };
+      }
+      return item;
+    });
 
-		this.setData({
-			recommendPosts,
-		})
+    this.setData({
+      posts: updatedPosts,
+    });
 	},
-
-  // 跳转到文章详情
-  navigateToPost(e) {
-    const id = e.currentTarget.dataset.id;
-    wx.navigateTo({
-      url: '../post/detail?id=' + id
-    });
-  },
-
-  // 跳转到活动详情
-  navigateToEvent(e) {
-    const id = e.currentTarget.dataset.id;
-    wx.navigateTo({
-      url: '../activity/detail?id=' + id
-    });
-  },
 
   // 跳转到内容详情
   navigateToDetail(e) {
-    const id = e.currentTarget.dataset.id;
+		const {posts} = this.data
+		const id = e.currentTarget.dataset.id;
+		const postItem = posts.find(item=>item.id===id)
+		wx.setStorageSync('postItem',postItem)
     wx.navigateTo({
       url: '../post/detail?id=' + id
     });

@@ -7,7 +7,7 @@ const loginApi = (code, userInfo) => http.post(`/user/wx/login?code=${code}`, us
 const logoutApi = () => http.post('/user/logout');
 
 //修改用户数据
-const updateUserInfoApi=( userInfo )=>http.post("/user",userInfo);
+const updateUserInfoApi=( params )=>http.post("/user",params);
 
 //获取用户数据
 const getUserInfoApi=()=>http.get('/user');

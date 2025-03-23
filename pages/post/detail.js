@@ -5,73 +5,9 @@ Page({
     postId: '',
     replyTo: '',
     commentText: '',
+    postImages: [], // 存储所有图片用于轮播
     // 示例数据，实际应从服务器获取
-    postData: {
-      id: 1,
-      title: "校园中心湖的日落美景，分享这难忘瞬间",
-      author: {
-        name: "摄影爱好者",
-        avatar: "/images/avatars/avatar1.jpg"
-      },
-      createTime: "2023-10-08 16:30",
-      content: [
-        {
-          type: "text",
-          content: "今天傍晚漫步在校园中心湖畔，被眼前的日落美景深深吸引。夕阳西下，余晖洒在湖面上，波光粼粼，景色格外迷人。迫不及待地拿出相机，记录下这难忘的瞬间，与大家分享这份美丽。"
-        },
-        {
-          type: "image",
-          content: "/images/posts/post1.jpg"
-        },
-        {
-          type: "text",
-          content: "校园的中心湖是许多同学课余放松的好去处，但很少有人会在落日时分来此。其实这个时候的湖面，在夕阳的映照下，呈现出金色的光芒，周围的建筑倒映在水中，构成了一幅绝美的画卷。"
-        },
-        {
-          type: "image",
-          content: "/images/posts/detail1.jpg"
-        },
-        {
-          type: "text",
-          content: "建议大家有空时可以来这里看看日落，感受大自然的魅力，给忙碌的学习生活增添一抹诗意。时间一般在下午5:30到6:30之间，根据季节有所不同。记得带上相机或者手机，捕捉属于你的美好瞬间！"
-        }
-      ],
-      tags: ["校园风光", "摄影分享", "日落"],
-      likeCount: 230,
-      commentCount: 15,
-      isLiked: false,
-      isCollected: false,
-      isFollowed: false,
-      comments: [
-        {
-          id: 1,
-          username: "风景爱好者",
-          avatar: "/images/avatars/avatar2.jpg",
-          content: "照片拍得真美！请问是用什么相机拍的呢？",
-          time: "10-08 18:15",
-          likes: 24,
-          isLiked: false
-        },
-        {
-          id: 2,
-          username: "校园摄影社团",
-          avatar: "/images/avatars/avatar3.jpg",
-          content: "构图很赞，光影处理得也很到位！欢迎加入我们社团一起交流~",
-          time: "10-08 19:30",
-          likes: 18,
-          isLiked: true
-        },
-        {
-          id: 3,
-          username: "文学青年",
-          avatar: "/images/avatars/avatar4.jpg",
-          content: "美不胜收！正如席慕蓉所说：'微风中摇曳的蓝花楹，像一首温柔的诗。'这景色也如诗如画。",
-          time: "10-09 08:45",
-          likes: 15,
-          isLiked: false
-        }
-      ]
-    }
+    postData: {}
   },
 
   onLoad(options) {
@@ -85,10 +21,37 @@ Page({
   },
 
   // 获取文章详情数据
-  fetchPostDetail(id) {
-    // 模拟API请求，实际开发中应从服务器获取
-    console.log(`获取文章ID: ${id} 的详情数据`);
-    // 这里使用的是示例数据，实际应该使用API请求
+  // fetchPostDetail(id) {
+  //   // 模拟API请求，实际开发中应从服务器获取
+  //   console.log(`获取文章ID: ${id} 的详情数据`);
+  //   // 这里使用的是示例数据，实际应该使用API请求
+    
+  //   // 处理图片和日期格式
+  //   this.processPostData();
+  // },
+  
+  // 处理帖子数据，提取图片并格式化日期
+  processPostData() {
+    const { postData } = this.data;
+    
+    // 提取所有图片
+    const images = postData.content
+      .filter(item => item.type === 'image')
+      .map(item => item.content);
+    
+    // 格式化日期（只保留年月日）
+    let createTimeFormatted = '';
+    if (postData.createTime) {
+      const dateObj = new Date(postData.createTime.replace(/-/g, '/'));
+      createTimeFormatted = dateObj.getFullYear() + '-' + 
+        (dateObj.getMonth() + 1).toString().padStart(2, '0') + '-' + 
+        dateObj.getDate().toString().padStart(2, '0');
+    }
+    
+    this.setData({
+      postImages: images,
+      'postData.createTimeFormatted': createTimeFormatted
+    });
   },
 
   // 点赞文章
@@ -154,6 +117,17 @@ Page({
     wx.previewImage({
       current,
       urls: images
+    });
+  },
+  
+  // 轮播图中的图片预览
+  previewSwiperImage(e) {
+    const src = e.currentTarget.dataset.src;
+    const urls = e.currentTarget.dataset.urls;
+    
+    wx.previewImage({
+      current: src,
+      urls: urls
     });
   },
 

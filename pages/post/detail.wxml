@@ -24,6 +24,29 @@
 
   <!-- 内容滚动区域 -->
   <view class="scroll-content">
+    <!-- 图片轮播 -->
+    <t-swiper
+      wx:if="{{postImages.length > 0}}"
+      current="{{0}}"
+      autoplay="{{true}}"
+      duration="{{500}}"
+      interval="{{5000}}"
+      height="400rpx"
+      navigation="{{ { type: 'dots' } }}"
+      class="post-swiper"
+    >
+      <t-swiper-item wx:for="{{postImages}}" wx:key="index">
+        <image 
+          src="{{item}}"
+          mode="aspectFill"
+          class="swiper-image"
+          data-src="{{item}}"
+          data-urls="{{postImages}}"
+          bindtap="previewSwiperImage"
+        />
+      </t-swiper-item>
+    </t-swiper>
+
     <!-- 文章标题 -->
     <view class="post-title">{{postData.title}}</view>
 
@@ -31,19 +54,17 @@
     <view class="post-content">
       <view wx:for="{{postData.content}}" wx:key="index" class="content-block">
         <view wx:if="{{item.type === 'text'}}" class="text-block">{{item.content}}</view>
-        <image 
-          wx:if="{{item.type === 'image'}}" 
-          src="{{item.content}}" 
-          mode="widthFix" 
-          class="image-block"
-          data-index="{{index}}"
-          bindtap="previewImage"
-        />
       </view>
     </view>
     
-    <!-- 文章发布时间（移到文章末尾） -->
-    <view class="post-time">{{postData.createTime}}</view>
+    <!-- 文章发布时间（只显示年月日） -->
+    <view class="post-time">{{postData.createTimeFormatted}}</view>
+
+    <!-- 地理位置 -->
+    <view class="post-location" wx:if="{{postData.location}}">
+      <t-icon name="location" size="32rpx" />
+      <text>{{postData.location}}</text>
+    </view>
 
     <!-- 标签列表 -->
     <view class="tags-list" wx:if="{{postData.tags.length > 0}}">

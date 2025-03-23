@@ -34,8 +34,8 @@ const uploadImageApi = (file) => {
 }
 
 // 发布帖子
-const publishPostApi = (postsDto) => {
-	return http.post('/post', postsDto);
+const publishPostApi = (params) => {
+	return http.post('/post', params);
 }
 
 // 获取所有标签

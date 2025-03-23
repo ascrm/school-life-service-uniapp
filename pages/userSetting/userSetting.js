@@ -38,10 +38,15 @@ Page({
    */
   onLoad(options) {
     this.loadUserInfo();
+<<<<<<< Updated upstream
   },
   
     // const userInfo = app.globalData.userInfo || {};
 
+=======
+	},
+	
+>>>>>>> Stashed changes
   // 加载用户信息
   loadUserInfo() {
     user.getUserInfoApi()
