@@ -1,4 +1,5 @@
 import Toast from 'tdesign-miniprogram/toast/index';
+const {post} = require('../../api/index')
 
 Page({
   data: {
@@ -21,37 +22,25 @@ Page({
   },
 
   // 获取文章详情数据
-  // fetchPostDetail(id) {
-  //   // 模拟API请求，实际开发中应从服务器获取
-  //   console.log(`获取文章ID: ${id} 的详情数据`);
-  //   // 这里使用的是示例数据，实际应该使用API请求
-    
-  //   // 处理图片和日期格式
-  //   this.processPostData();
-  // },
+  fetchPostDetail(id) {
+    // 模拟API请求，实际开发中应从服务器获取
+		post.getPostDetailApi({ postId: id }).then((data)=>{
+			this.setData({
+				postData: data,
+				postImages: data.imageUrls
+			})
+			// 处理图片和日期格式
+			this.processPostData();
+		})
+  },
   
   // 处理帖子数据，提取图片并格式化日期
   processPostData() {
     const { postData } = this.data;
-    
-    // 提取所有图片
-    const images = postData.content
-      .filter(item => item.type === 'image')
-      .map(item => item.content);
-    
-    // 格式化日期（只保留年月日）
-    let createTimeFormatted = '';
-    if (postData.createTime) {
-      const dateObj = new Date(postData.createTime.replace(/-/g, '/'));
-      createTimeFormatted = dateObj.getFullYear() + '-' + 
-        (dateObj.getMonth() + 1).toString().padStart(2, '0') + '-' + 
-        dateObj.getDate().toString().padStart(2, '0');
-    }
-    
-    this.setData({
-      postImages: images,
-      'postData.createTimeFormatted': createTimeFormatted
-    });
+		postData.createdAt = postData.createdAt.split('T')[0]
+		this.setData({
+			postData
+		})
   },
 
   // 点赞文章

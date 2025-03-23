@@ -2,9 +2,9 @@
   <!-- 固定在顶部的文章头部信息 -->
   <view class="post-header">
     <view class="author-info">
-      <t-avatar image="{{postData.author.avatar}}" size="medium" />
+      <t-avatar image="{{postData.userVo.avatar}}" size="medium" />
       <view class="author-meta">
-        <view class="author-name">{{postData.author.name}}</view>
+        <view class="author-name">{{postData.userVo.nickName}}</view>
       </view>
     </view>
     <view class="header-actions">
@@ -28,48 +28,32 @@
     <t-swiper
       wx:if="{{postImages.length > 0}}"
       current="{{0}}"
-      autoplay="{{true}}"
+      autoplay="{{false}}"
       duration="{{500}}"
       interval="{{5000}}"
-      height="400rpx"
+			list="{{postImages}}"
       navigation="{{ { type: 'dots' } }}"
       class="post-swiper"
     >
-      <t-swiper-item wx:for="{{postImages}}" wx:key="index">
-        <image 
-          src="{{item}}"
-          mode="aspectFill"
-          class="swiper-image"
-          data-src="{{item}}"
-          data-urls="{{postImages}}"
-          bindtap="previewSwiperImage"
-        />
-      </t-swiper-item>
     </t-swiper>
 
     <!-- 文章标题 -->
     <view class="post-title">{{postData.title}}</view>
 
     <!-- 文章内容 -->
-    <view class="post-content">
-      <view wx:for="{{postData.content}}" wx:key="index" class="content-block">
-        <view wx:if="{{item.type === 'text'}}" class="text-block">{{item.content}}</view>
-      </view>
-    </view>
+    <view class="post-content">{{postData.content}}</view>
     
-    <!-- 文章发布时间（只显示年月日） -->
-    <view class="post-time">{{postData.createTimeFormatted}}</view>
-
-    <!-- 地理位置 -->
-    <view class="post-location" wx:if="{{postData.location}}">
-      <t-icon name="location" size="32rpx" />
-      <text>{{postData.location}}</text>
-    </view>
+		<view class="post-footer">
+		 	<!-- 文章发布时间 -->
+			<view class="post-time">{{postData.createdAt}}</view>
+			<!-- 地理位置 -->
+			<view class="post-location" wx:if="{{postData.location}}">{{postData.location}}</view>
+		</view>
 
     <!-- 标签列表 -->
-    <view class="tags-list" wx:if="{{postData.tags.length > 0}}">
+    <view class="tags-list" wx:if="{{postData.tagNames.length > 0}}">
       <t-tag 
-        wx:for="{{postData.tags}}" 
+        wx:for="{{postData.tagNames}}" 
         wx:key="index" 
         variant="light" 
         theme="primary" 
@@ -83,21 +67,27 @@
     </view>
 
     <t-divider content="评论区" />
-
     <!-- 评论列表 -->
     <view class="comments-section">
-      <view wx:if="{{postData.comments.length > 0}}">
+      <view wx:if="{{postData.commentVos.length > 0}}">
+        <!-- 顶层评论 -->
         <view 
-          wx:for="{{postData.comments}}" 
+          wx:for="{{postData.commentVos}}" 
           wx:key="id" 
           class="comment-item"
+          bindtap="replyComment"
+          data-id="{{item.id}}" 
+          data-name="{{item.username}}"
         >
-          <t-avatar image="{{item.avatar}}" size="small" />
+          <t-avatar image="{{item.userVo.avatar}}" size="small" />
           <view class="comment-content">
-            <view class="comment-user">{{item.username}}</view>
+            <view class="comment-user">{{item.userVo.nickName}}</view>
             <view class="comment-text">{{item.content}}</view>
-            <view class="comment-meta">
-              <text class="comment-time">{{item.time}}</text>
+            <view class="comment-info">
+              <view class="comment-details">
+                <text class="comment-time">{{item.createdAt}}</text>
+                <text class="comment-location" wx:if="{{item.location}}">{{item.location}}</text>
+              </view>
               <view class="comment-actions">
                 <t-icon 
                   name="{{item.isLiked ? 'heart-filled' : 'heart'}}" 
@@ -105,9 +95,50 @@
                   color="{{item.isLiked ? '#FF4F4F' : '#BBBBBB'}}" 
                   bindtap="likeComment" 
                   data-id="{{item.id}}" 
+                  catch:tap="likeComment"
                 />
                 <text>{{item.likes}}</text>
-                <t-icon name="chat" size="32rpx" bindtap="replyComment" data-id="{{item.id}}" data-name="{{item.username}}" />
+              </view>
+            </view>
+          
+            <!-- 二级评论/回复 -->
+            <view class="reply-list" wx:if="{{item.children && item.children.length > 0}}">
+              <view 
+                wx:for="{{item.children}}" 
+                wx:for-item="reply" 
+                wx:key="id"
+                class="reply-item"
+                bindtap="replyComment"
+                data-id="{{item.id}}"
+                data-name="{{reply.username}}"
+                data-is-reply="true"
+              >
+								<image class="reply-avatar" src="{{reply.userVo.avatar}}" />
+								<view class="reply-content">
+									<view class="reply-user">
+                  	<text class="reply-username">{{reply.userVo.nickName}}</text>
+                  	<text wx:if="{{reply.parentName}}" class="reply-to">回复</text>
+                  	<text wx:if="{{reply.parentName}}" class="reply-to-username">{{reply.parentName}}</text>
+                	</view>
+                	<view class="reply-text">{{reply.content}}</view>
+                	<view class="reply-info">
+                  	<view class="reply-details">
+                    	<text class="reply-time">{{reply.createdAt}}</text>
+                    	<text class="reply-location" wx:if="{{reply.location}}">{{reply.location}}</text>
+                  	</view>
+                  	<view class="reply-actions">
+                    	<t-icon 
+                      	name="{{reply.isLiked ? 'heart-filled' : 'heart'}}" 
+                      	size="28rpx" 
+                      	color="{{reply.isLiked ? '#FF4F4F' : '#BBBBBB'}}" 
+                      	data-id="{{reply.id}}" 
+                      	data-is-reply="true"
+                      	catch:tap="likeReply"
+                    	/>
+                    	<text>{{reply.likes}}</text>
+                  	</view>
+                	</view>
+								</view>
               </view>
             </view>
           </view>

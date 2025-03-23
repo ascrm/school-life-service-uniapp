@@ -300,10 +300,10 @@ Page({
 
   // 跳转到内容详情
   navigateToDetail(e) {
-		const {posts} = this.data
 		const id = e.currentTarget.dataset.id;
-		const postItem = posts.find(item=>item.id===id)
-		wx.setStorageSync('postItem',postItem)
+		// const {posts} = this.data
+		// const postItem = posts.find(item=>item.id===id)
+		// wx.setStorageSync('postItem',postItem)
     wx.navigateTo({
       url: '../post/detail?id=' + id
     });

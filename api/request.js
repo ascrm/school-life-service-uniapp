@@ -50,7 +50,7 @@ const request = (url, method = 'GET', data = {}, needToken = true) => {
         if (res.statusCode === 200) {
           if (res.data.code === 0 || res.data.code === 200) {
             // 请求成功
-            resolve(res.data.data);
+						resolve(res.data.data);
           } else if (res.data.code === 401) {
             // token失效，需要重新登录
             wx.removeStorageSync('token');
