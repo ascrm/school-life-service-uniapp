@@ -280,22 +280,21 @@ Page({
 	onClickLikes(e){
     const { posts } = this.data;
     const id = e.currentTarget.dataset.id;
-    post.addLikePostApi(id);
-    
-    const updatedPosts = posts.map(item => {
-      if(item.id == id) {
-        return {
-          ...item,
-          isLiked: !item.isLiked,
-          likes: item.isLiked ? item.likes - 1 : item.likes + 1
-        };
-      }
-      return item;
-    });
-
-    this.setData({
-      posts: updatedPosts,
-    });
+		post.addLikePostApi({postId: id}).then(()=>{
+			const updatedPosts = posts.map(item => {
+				if(item.id == id) {
+					return {
+						...item,
+						isLiked: !item.isLiked,
+						likes: item.isLiked ? item.likes - 1 : item.likes + 1
+					};
+				}
+				return item;
+			});
+			this.setData({
+				posts: updatedPosts,
+			});
+		})
 	},
 
   // 跳转到内容详情

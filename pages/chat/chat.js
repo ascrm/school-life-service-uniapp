@@ -71,67 +71,29 @@ Page({
   
   // 获取目标用户信息
   getTargetUserInfo(userId) {
-    // 模拟API调用
-    // 实际应用中需要调用后端API
-    setTimeout(() => {
-      this.setData({
-        targetUser: {
-          id: userId,
-          nickName: '用户' + userId,
-          avatar: 'https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132'
-        }
-      });
-      wx.setNavigationBarTitle({
-        title: this.data.targetUser.nickName
-      });
-    }, 500);
+    //发送请求
+    
+    wx.setNavigationBarTitle({
+			title: {}
+		});
   },
   
   // 获取聊天历史
   getChatHistory(targetUserId) {
-    // 模拟API调用
-    // 实际应用中需要调用后端API
-    setTimeout(() => {
-      const mockMessages = [
-        {
-          id: '1',
-          senderId: this.data.currentUser?.id || 'me',
-          content: '你好，这是一条测试消息',
-          type: 'text',
-          timestamp: new Date().getTime() - 3600000,
-          status: 'sent'
-        },
-        {
-          id: '2',
-          senderId: targetUserId,
-          content: '你好，很高兴认识你',
-          type: 'text',
-          timestamp: new Date().getTime() - 3500000,
-          status: 'received'
-        }
-      ];
-      
-      this.setData({
-        messages: mockMessages
-      });
-    }, 800);
+    //发送请求
+    
+    this.setData({
+			messages: {}
+		});
   },
   
   // 获取关注状态
   getFollowStatus(targetUserId) {
-    // 模拟API调用
-    // 实际应用中需要调用后端API
-    setTimeout(() => {
-      const mockStatus = {
-        iFollowThem: false,
-        theyFollowMe: false
-      };
-      
-      this.setData({
-        followStatus: mockStatus,
-        canSendFreely: mockStatus.iFollowThem && mockStatus.theyFollowMe
-      });
-    }, 600);
+    // 发送请求
+		this.setData({
+			followStatus: mockStatus,
+			canSendFreely: mockStatus.iFollowThem && mockStatus.theyFollowMe
+		});
   },
   
   // 发送消息

@@ -11,13 +11,13 @@ Page({
         id: 1,
         title: '跑腿代取',
         icon: '/images/icons/跑腿代办.png',
-        url: '/pages/service/errand/errand'
+        url: '../errand/errand'
       },
       { 
         id: 2,
         title: '二手交易',
         icon: '/images/icons/二手交易.png',
-        url: '/pages/service/secondhand/secondhand'
+        url: '../market/market'
       },
       { 
         id: 3,

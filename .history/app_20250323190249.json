@@ -10,9 +10,7 @@
     "pages/login/login",
     "pages/userSetting/userSetting",
     "pages/chat/chat",
-    "pages/followers/followers",
-    "pages/service/errand/errand",
-    "pages/service/secondhand/secondhand"
+    "pages/followers/followers"
   ],
   "window": {
     "backgroundTextStyle": "light",

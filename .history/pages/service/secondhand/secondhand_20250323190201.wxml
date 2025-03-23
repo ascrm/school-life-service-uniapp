@@ -1,0 +1,124 @@
+<!--pages/service/secondhand/secondhand.wxml-->
+<view class="secondhand-container">
+  <!-- 顶部导航栏 -->
+  <t-navbar title="二手交易" titleMaxLength="{{10}}" class="custom-navbar">
+  </t-navbar>
+  
+  <!-- 搜索框 -->
+  <view class="search-bar">
+    <t-search
+      value="{{keyword}}"
+      placeholder="搜索二手商品"
+      center
+      bind:submit="onSearch"
+      bind:clear="clearSearch"
+    />
+  </view>
+  
+  <!-- 标签切换 -->
+  <t-tabs
+    defaultValue="{{currentTab}}"
+    value="{{currentTab}}"
+    bind:change="onTabChange"
+    t-class="custom-tabs"
+    sticky
+  >
+    <t-tab-panel 
+      wx:for="{{tabs}}" 
+      wx:key="value"
+      label="{{item.label}}" 
+      value="{{item.value}}" 
+    />
+  </t-tabs>
+  
+  <!-- 分类选择 -->
+  <scroll-view scroll-x class="category-scroll">
+    <view class="category-list">
+      <view 
+        wx:for="{{categories}}" 
+        wx:key="id" 
+        class="category-item {{currentCategory === item.id ? 'active' : ''}}"
+        bindtap="onCategoryChange"
+        data-id="{{item.id}}"
+      >
+        {{item.name}}
+      </view>
+    </view>
+  </scroll-view>
+  
+  <!-- 主内容区域 -->
+  <scroll-view scroll-y class="goods-container" bindscrolltolower="loadMoreGoods">
+    <!-- 商品列表 -->
+    <block wx:if="{{goodsList.length > 0}}">
+      <view class="goods-list">
+        <view 
+          wx:for="{{goodsList}}" 
+          wx:key="id" 
+          class="goods-item {{item.isSold ? 'sold' : ''}}"
+          bindtap="viewGoodsDetail"
+          data-id="{{item.id}}"
+        >
+          <!-- 商品图片 -->
+          <view class="goods-image-container">
+            <image 
+              class="goods-image" 
+              src="{{item.images[0]}}" 
+              mode="aspectFill"
+              lazy-load
+            ></image>
+            <view class="goods-tag" wx:if="{{item.isSold}}">已售出</view>
+          </view>
+          
+          <!-- 商品信息 -->
+          <view class="goods-info">
+            <view class="goods-title">{{item.title}}</view>
+            
+            <view class="goods-meta">
+              <view class="goods-condition">{{item.condition}}</view>
+              <view class="goods-location">{{item.location}}</view>
+            </view>
+            
+            <view class="goods-price-row">
+              <view class="goods-price">¥{{item.price}}</view>
+              <view class="goods-original-price" wx:if="{{item.originalPrice > item.price}}">¥{{item.originalPrice}}</view>
+            </view>
+          </view>
+          
+          <!-- 收藏按钮 -->
+          <view 
+            class="collect-btn {{item.isCollected ? 'active' : ''}}" 
+            catchtap="toggleCollect"
+            data-id="{{item.id}}"
+          >
+            <t-icon 
+              name="{{item.isCollected ? 'heart-filled' : 'heart'}}" 
+              size="40rpx" 
+              color="{{item.isCollected ? '#ff4f4f' : '#cccccc'}}" 
+            />
+          </view>
+        </view>
+      </view>
+      
+      <!-- 加载更多 -->
+      <view class="loading-area" wx:if="{{loading}}">
+        <t-loading theme="dots" size="40rpx" text="加载中..." />
+      </view>
+      
+      <!-- 无更多数据 -->
+      <view class="no-more" wx:if="{{!hasMore && goodsList.length > 0 && !loading}}">
+        <text>- 没有更多了 -</text>
+      </view>
+    </block>
+    
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{isEmpty && !loading}}">
+      <t-icon name="shop" size="96rpx" color="#cccccc" />
+      <text>暂无二手商品</text>
+    </view>
+  </scroll-view>
+  
+  <!-- 发布按钮 -->
+  <view class="fab-button" bindtap="publishGoods">
+    <t-icon name="add" size="48rpx" color="#ffffff" />
+  </view>
+</view> 

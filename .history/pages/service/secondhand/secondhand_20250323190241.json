@@ -1,0 +1,15 @@
+{
+  "navigationBarTitleText": "二手交易",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "t-button": "tdesign-miniprogram/button/button",
+    "t-icon": "tdesign-miniprogram/icon/icon",
+    "t-loading": "tdesign-miniprogram/loading/loading",
+    "t-tabs": "tdesign-miniprogram/tabs/tabs",
+    "t-tab-panel": "tdesign-miniprogram/tab-panel/tab-panel",
+    "t-tag": "tdesign-miniprogram/tag/tag",
+    "t-search": "tdesign-miniprogram/search/search",
+    "t-navbar": "tdesign-miniprogram/navbar/navbar"
+  },
+  "enablePullDownRefresh": true
+} 
