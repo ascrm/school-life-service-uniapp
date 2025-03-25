@@ -36,14 +36,14 @@
 
 /* 聊天消息列表 */
 .messages-container {
-  flex: 1;
-  padding: 24rpx;
+	flex: 1;
+	padding: 20rpx 0;
   overflow-y: auto;
 }
 
 .messages-list {
   display: flex;
-  flex-direction: column;
+	flex-direction: column;
 }
 
 .message-item {
@@ -53,11 +53,11 @@
 }
 
 .message-sent {
-  flex-direction: row-reverse;
+	flex-direction: row-reverse;
 }
 
 .message-received {
-  flex-direction: row;
+	flex-direction: row;
 }
 
 /* 头像样式 */

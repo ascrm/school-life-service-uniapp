@@ -5,7 +5,7 @@ App({
     // 检查本地缓存中是否有登录信息
     const userInfo = wx.getStorageSync('userInfo');
     const token = wx.getStorageSync('token');
-    
+		
     if (userInfo && token) {
       this.globalData.userInfo = userInfo;
       this.globalData.isLoggedIn = true;
@@ -63,21 +63,22 @@ App({
 
   // 延迟登录检查
   checkLoginStatus(callback = () => {}, skipLogin = false) {
+
     if (this.globalData.isLoggedIn) {
-      // 已登录，直接执行回调
+			// 已登录，直接执行回调
       callback();
       return true;
     } else {
       if (skipLogin) {
-        // 跳过登录检查，直接执行回调
+				// 跳过登录检查，直接执行回调
         callback();
         return false;
       }
       
-      // 获取当前页面路径
-      const pages = getCurrentPages();
-      const currentPage = pages[pages.length - 1];
-      const currentPath = '/' + currentPage.route;
+			// 获取当前页面路径
+			const pages = getCurrentPages();
+			const currentPage = pages[pages.length - 1];
+			const currentPath = '/' + currentPage.route;
 			
       // 未登录，保存待执行的操作，并直接跳转到登录页
       this.globalData.pendingActions.push(callback);
