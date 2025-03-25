@@ -67,6 +67,42 @@ Page({
     
     // 获取关注状态
     this.getFollowStatus(targetUserId);
+    
+    // 初始化WebSocket连接
+    this.initSocketConnection();
+  },
+  
+  /**
+   * 初始化WebSocket连接
+   */
+  initSocketConnection() {
+    // 检查WebSocket连接状态
+    if (!app.globalData.socketOpen) {
+      this.connectSocket(() => {
+        console.log('WebSocket连接初始化完成');
+      });
+    }
+  },
+  
+  onUnload: function() {
+    // 页面卸载时，如果没有其他聊天页面，可以关闭WebSocket
+    const pages = getCurrentPages();
+    const chatPages = pages.filter(page => page.route.includes('pages/chat/chat'));
+    
+    if (chatPages.length <= 1) {
+      // 如果只有当前这一个聊天页面，可以考虑关闭连接
+      // 但如果你希望保持长连接以接收通知，则不应关闭
+      // app.closeWebSocket();
+      
+      // 通知服务器用户离开了聊天页面
+      if (app.globalData.socketOpen) {
+        app.sendSocketMessage({
+          type: 'leave_chat',
+          userId: this.data.currentUser.id,
+          targetId: this.data.targetUser.id
+        });
+      }
+    }
   },
   
   // 获取目标用户信息
@@ -86,7 +122,6 @@ Page({
   
   // 获取聊天历史
   getChatHistory(userId,receiverId) {
-		console.log("你无敌了")
 		chat.getHistoryMessageApi({userId,receiverId})
 		.then((data)=>{
 			this.setData({
@@ -99,7 +134,7 @@ Page({
   getFollowStatus(targetUserId) {
 		user.getFollowStatusApi({userId:targetUserId})
 		.then((data)=>{
-			setData({
+			this.setData({
 				'followStatus.iFollowThem': data.iFollowThem,
 				'followStatus.theyFollowMe': data.theyFollowMe,
 			})
@@ -126,35 +161,211 @@ Page({
       }
     }
     
+    // 构建消息对象
     const newMessage = {
-      id: Date.now().toString(),
       senderId: this.data.currentUser.id,
+      receiverId: this.data.targetUser.id,
       content: this.data.inputContent,
-      type: 'text',
-      timestamp: new Date().getTime(),
-      status: 'sending'
+			type: 1,
+			status: 'sending',
     };
     
+    // 先在本地添加消息，显示发送中状态
     const messages = [...this.data.messages, newMessage];
-    
     this.setData({
       messages,
       inputContent: ''
     });
     
-    // 模拟发送消息
+    // 滚动到底部
+    this.scrollToBottom();
+    
+    // 检查WebSocket连接状态
+    if (this.isSocketOpen()) {
+      // 通过WebSocket发送消息
+      this.sendSocketMessage(newMessage);
+    } else {
+      // WebSocket未连接，尝试重新连接
+      this.connectSocket(() => {
+        this.sendSocketMessage(newMessage);
+      });
+    }
+  },
+    
+  /**
+   * 通过WebSocket发送消息
+   * @param {Object} message - 要发送的消息对象
+   */
+  sendSocketMessage(message) {
+    const app = getApp();
+		
+    // 使用app.js中的发送方法
+    const isSuccess = app.sendSocketMessage(message);
+				
+		//发送成功则修改消息状态为已送达
+		if(isSuccess){
+			const newMessages = cthis.data.messages.map(msg=>{
+				if(msg.id===message.id){
+					return {...msg, status: 'send'}
+				}
+			})
+
+			this.setData({
+				messages: newMessages
+			})
+		}else{  
+			//如果失败，这里仅考虑因为网络问题websocket断开连接导致的发送失败，不考虑因为后端代码造成的失败
+
+			//如果是因为网络问题导致的失败，那么websocket会尝试重连并重新发送消息;所以消息会一直处于sending的状态，所以不需要处理
+		}
+
+		//如果websocket一直没有重连成功，那么
+    // 设置一个超时检查，如果一段时间后消息状态仍为sending，则认为发送失败
     setTimeout(() => {
-      const updatedMessages = this.data.messages.map(msg => {
-        if (msg.id === newMessage.id) {
-          return { ...msg, status: 'sent' };
+      const currentMsg = this.data.messages.find(msg => msg.id === message.id);
+      if (currentMsg && currentMsg.status === 'sending') {
+        this.updateMessageStatus(message.id, 'failed');
+      }
+    }, 10000); // 10秒后检查
+  },
+  
+  /**
+   * 处理从WebSocket服务器接收到的消息
+   * @param {Object} data - 收到的消息数据
+   */
+  handleReceivedMessage(data) {
+    // 根据消息类型处理
+    switch (data.type) {
+      case 'chat_message': // 接收到新消息
+        // 检查是否是当前聊天对象的消息
+        if (data.senderId === this.data.targetUser.id) {
+          // 添加到消息列表
+          const newMessage = {
+            id: data.messageId || Date.now().toString(),
+            senderId: data.senderId,
+            content: data.content,
+            type: data.contentType || 'text',
+            timestamp: data.timestamp || new Date().getTime(),
+            status: 'received'
+          };
+          
+          this.setData({
+            messages: [...this.data.messages, newMessage]
+          });
+          
+          // 滚动到底部
+          this.scrollToBottom();
+        } else {
+          // 不是当前聊天对象的消息，可以显示未读通知
+          wx.showToast({
+            title: '收到新消息',
+            icon: 'none'
+          });
         }
-        return msg;
-      });
-      
-      this.setData({
-        messages: updatedMessages
-      });
-    }, 500);
+        break;
+        
+      case 'message_ack': // 消息确认送达
+        // 更新对应消息的状态为已送达
+        if (data.messageId) {
+          this.updateMessageStatus(data.messageId, 'sent');
+        }
+        break;
+        
+      case 'message_read': // 消息已读通知
+        // 更新对应消息的状态为已读
+        if (data.messageId) {
+          this.updateMessageStatus(data.messageId, 'read');
+        }
+        break;
+        
+      case 'typing': // 对方正在输入
+        // 可以显示"对方正在输入"的提示
+        break;
+        
+      default:
+        console.log('收到未知类型的WebSocket消息', data);
+    }
+  },
+  
+  /**
+   * 更新消息状态
+   * @param {String} messageId - 消息ID
+   * @param {String} status - 新状态：sending, sent, read, failed
+   */
+  updateMessageStatus(messageId, status) {
+    const updatedMessages = this.data.messages.map(msg => {
+      if (msg.id === messageId) {
+        return { ...msg, status };
+      }
+      return msg;
+    });
+    
+    this.setData({
+      messages: updatedMessages
+    });
+  },
+  
+  /**
+   * 检查WebSocket是否已连接
+   * @return {Boolean} 连接状态
+   */
+  isSocketOpen() {
+    return getApp().globalData.socketOpen === true;
+	},
+	
+	  /**
+   * 连接WebSocket服务器
+   * @param {Function} callback - 连接成功后的回调函数
+   */
+  connectSocket(callback) {
+    const app = getApp();
+    
+    // 如果已经连接，则直接执行回调
+    if (app.globalData.socketOpen) {
+      callback && callback();
+      return;
+    }
+    
+    // 显示连接中提示
+    wx.showLoading({
+      title: '连接中...',
+    });
+    
+    // 使用app.js中的WebSocket初始化方法
+    app.initWebSocket();
+    
+    // 设置一个超时检查，确保回调最终会被执行
+    setTimeout(() => {
+      wx.hideLoading();
+      if (app.globalData.socketOpen) {
+        callback && callback();
+      } else {
+        // 连接失败，更新UI
+        wx.showToast({
+          title: '连接失败，请稍后重试',
+          icon: 'none'
+        });
+      }
+    }, 3000);
+  },
+  
+  /**
+   * 滚动到消息列表底部
+   */
+  scrollToBottom() {
+    setTimeout(() => {
+      wx.createSelectorQuery()
+        .select('#message-list')
+        .boundingClientRect((rect) => {
+          if (rect && rect.height) {
+            wx.pageScrollTo({
+              scrollTop: rect.height,
+              duration: 300
+            });
+          }
+        })
+        .exec();
+    }, 100);
   },
   
   // 处理输入框内容变化

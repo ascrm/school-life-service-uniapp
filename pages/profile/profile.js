@@ -18,7 +18,7 @@ Page({
     showAvatarPreview: false // 头像预览弹窗控制
 	},
 	
-	onLoad() {
+	onShow() {
 		// 检查登录状态
     if (!app.checkLoginStatus(() => {
 			this.setData({
