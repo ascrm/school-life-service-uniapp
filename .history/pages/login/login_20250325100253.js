@@ -20,9 +20,11 @@ Page({
     wx.getUserProfile({
       desc: '用于完善用户资料',
       success: (res) => {
+				console.log("获取用户信息成功: ",res.userInfo)
         this.handleLogin(res.userInfo);
       },
       fail: (err) => {
+        console.error('获取用户信息失败，详细错误：', err);
         Toast({
           context: this,
           selector: '#t-toast',
@@ -52,6 +54,7 @@ Page({
           user.loginApi(res.code, userInfo)
             .then( (data) => {
 							// 登录成功，存储用户信息和token
+							console.log("登陆成功：",data)
 							wx.setStorageSync('userInfo', data.userVo);
               wx.setStorageSync('token', data.token);
               
@@ -67,29 +70,18 @@ Page({
                 theme: 'success',
               });
               
-							// 登录成功后跳转
+              // 登录成功后跳转
               setTimeout(() => {
-								if (this.data.redirectUrl) {
-									// 检查重定向URL是否是tabBar页面
-									const tabBarPages = ['/pages/home/home', '/pages/discover/discover', 
-																			'/pages/publish/publish', '/pages/message/message', 
-																			'/pages/profile/profile'];
-									
-									if (tabBarPages.includes(this.data.redirectUrl)) {
-										wx.switchTab({
-											url: this.data.redirectUrl,
-										});
-									} else {
-										wx.redirectTo({
-											url: this.data.redirectUrl,
-										});
-									}
-								} else {
-									wx.switchTab({
-										url: '/pages/profile/profile',
-									});
-								}
-							}, 1000);
+                if (this.data.redirectUrl) {
+                  wx.redirectTo({
+                    url: this.data.redirectUrl
+                  });
+                } else {
+                  wx.redirectTo({
+                    url: '/pages/profile/profile'
+                  });
+                }
+              }, 1000);
             })
             .catch((err) => {
               console.error('登录失败', err);

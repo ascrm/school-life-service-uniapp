@@ -2,7 +2,7 @@
 // 基础请求封装
 
 // 服务器基础地址
-const BASE_URL = 'http://localhost:8080/school/web'; // 替换为您的实际API地址
+const BASE_URL = 'http://192.168.31.183:8080/school/web'; // 替换为您的实际API地址
 
 /**
  * 封装网络请求

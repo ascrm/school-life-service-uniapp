@@ -50,12 +50,12 @@
         <!-- 消息内容 -->
         <view class="message-content-container">
           <!-- 文本消息 -->
-          <view wx:if="{{item.type === 'text'}}" class="message-bubble {{item.isRecalled ? 'message-recalled' : ''}}">
+          <view wx:if="{{item.type === 1}}" class="message-bubble {{item.isRecalled ? 'message-recalled' : ''}}">
             <text class="message-text">{{item.content}}</text>
           </view>
           
           <!-- 图片消息 -->
-          <view wx:elif="{{item.type === 'image'}}" class="message-bubble message-image-container">
+          <view wx:elif="{{item.type === 2}}" class="message-bubble message-image-container">
             <image 
               class="message-image" 
               src="{{item.content}}" 
@@ -66,7 +66,7 @@
           </view>
           
           <!-- 视频消息 -->
-          <view wx:elif="{{item.type === 'video'}}" class="message-bubble message-video-container">
+          <view wx:elif="{{item.type === 3}}" class="message-bubble message-video-container">
             <video 
               class="message-video" 
               src="{{item.content}}" 
@@ -76,7 +76,7 @@
           </view>
           
           <!-- 文件消息 -->
-          <view wx:elif="{{item.type === 'file'}}" class="message-bubble message-file-container">
+          <view wx:elif="{{item.type === 4}}" class="message-bubble message-file-container">
             <view class="message-file">
               <t-icon name="file" size="48rpx" />
               <text class="message-file-name">{{item.fileName || '文件'}}</text>

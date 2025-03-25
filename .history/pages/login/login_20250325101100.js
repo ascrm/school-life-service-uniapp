@@ -68,28 +68,48 @@ Page({
               });
               
 							// 登录成功后跳转
-              setTimeout(() => {
-								if (this.data.redirectUrl) {
-									// 检查重定向URL是否是tabBar页面
-									const tabBarPages = ['/pages/home/home', '/pages/discover/discover', 
-																			'/pages/publish/publish', '/pages/message/message', 
-																			'/pages/profile/profile'];
-									
-									if (tabBarPages.includes(this.data.redirectUrl)) {
-										wx.switchTab({
-											url: this.data.redirectUrl,
-										});
-									} else {
-										wx.redirectTo({
-											url: this.data.redirectUrl,
-										});
-									}
-								} else {
-									wx.switchTab({
-										url: '/pages/profile/profile',
-									});
-								}
-							}, 1000);
+							console.log("准备跳转...");
+              if (this.data.redirectUrl) {
+                console.log("跳转中。。。")
+                // 检查重定向URL是否是tabBar页面
+                const tabBarPages = ['/pages/home/home', '/pages/discover/discover', 
+                                    '/pages/publish/publish', '/pages/message/message', 
+                                    '/pages/profile/profile'];
+                
+                if (tabBarPages.includes(this.data.redirectUrl)) {
+                  wx.switchTab({
+                    url: this.data.redirectUrl,
+                    success: function() {
+                      console.log("切换到标签页成功");
+                    },
+                    fail: function(err) {
+                      console.error("切换到标签页失败", err);
+                    }
+                  });
+                } else {
+                  wx.redirectTo({
+                    url: this.data.redirectUrl,
+                    success: function() {
+                      console.log("跳转成功");
+                    },
+                    fail: function(err) {
+                      console.error("跳转失败", err);
+                    }
+                  });
+                }
+              } else {
+                console.log("没有redirectUrl，跳转到个人中心");
+                wx.switchTab({
+                  url: '/pages/profile/profile',
+                  success: function() {
+                    console.log("跳转到个人中心成功");
+                  },
+                  fail: function(err) {
+                    console.error("跳转到个人中心失败", err);
+                  }
+                });
+              }
+              
             })
             .catch((err) => {
               console.error('登录失败', err);

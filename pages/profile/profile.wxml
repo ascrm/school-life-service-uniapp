@@ -13,8 +13,8 @@
         <view class="user-nickName">{{ userInfo.nickName }}</view>
 				<view class="user-brief" >{{userInfo.brief || "这个人很懒，什么都没留下"}}</view>
       </view>
-			<t-button style="width: 250rpx;" size="small" variant="outline" class="edit-btn" bind:tap="navigateTo" data-url="../userSetting/userSetting">
-            <view style="display: flex;justify-content: center;align-items: center;"><t-icon name="edit" size="32rpx" />编辑资料</view>
+			<t-button style="width: 250rpx;" size="small" variant="outline" class="edit-btn" bind:tap="navigateToUserSetting">
+        <view style="display: flex;justify-content: center;align-items: center;"><t-icon name="edit" size="32rpx" />编辑资料</view>
   		</t-button>
     </view>
   </view>

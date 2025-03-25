@@ -1,4 +1,5 @@
 const app = getApp();
+const {user,chat} = require('../../api/index')
 
 Page({
   data: {
@@ -42,7 +43,6 @@ Page({
   onLoad: function (options) {
     // 获取目标用户ID
     const targetUserId = options.userId;
-    
     if (!targetUserId) {
       wx.showToast({
         title: '用户不存在',
@@ -63,7 +63,7 @@ Page({
     this.getTargetUserInfo(targetUserId);
     
     // 获取聊天历史
-    this.getChatHistory(targetUserId);
+    this.getChatHistory(this.data.currentUser.id,targetUserId);
     
     // 获取关注状态
     this.getFollowStatus(targetUserId);
@@ -72,28 +72,38 @@ Page({
   // 获取目标用户信息
   getTargetUserInfo(userId) {
     //发送请求
-    
-    wx.setNavigationBarTitle({
-			title: {}
-		});
+		user.getUserInfoApi({userId})
+		.then((data)=>{
+			wx.setNavigationBarTitle({
+				title: data.nickName,
+			});
+
+			this.setData({
+				targetUser: data
+			})
+		})
   },
   
   // 获取聊天历史
-  getChatHistory(targetUserId) {
-    //发送请求
-    
-    this.setData({
-			messages: {}
-		});
+  getChatHistory(userId,receiverId) {
+		console.log("你无敌了")
+		chat.getHistoryMessageApi({userId,receiverId})
+		.then((data)=>{
+			this.setData({
+				messages: data
+			})
+		})
   },
   
   // 获取关注状态
   getFollowStatus(targetUserId) {
-    // 发送请求
-		this.setData({
-			followStatus: mockStatus,
-			canSendFreely: mockStatus.iFollowThem && mockStatus.theyFollowMe
-		});
+		user.getFollowStatusApi({userId:targetUserId})
+		.then((data)=>{
+			setData({
+				'followStatus.iFollowThem': data.iFollowThem,
+				'followStatus.theyFollowMe': data.theyFollowMe,
+			})
+		})
   },
   
   // 发送消息

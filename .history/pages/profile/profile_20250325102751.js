@@ -151,7 +151,7 @@ Page({
 	//跳转到编辑信息页面
 	navigateToUserSetting(e) {
     wx.navigateTo({
-      url: '/pages/userSetting/userSetting'
+      url: 'pages/userSetting/userSetting'
     })
   },
 }) 

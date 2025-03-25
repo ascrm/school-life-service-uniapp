@@ -36,48 +36,30 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad(options) {
+  onShow() {
     this.loadUserInfo();
-<<<<<<< Updated upstream
   },
-  
-    // const userInfo = app.globalData.userInfo || {};
-
-=======
-	},
-	
->>>>>>> Stashed changes
   // 加载用户信息
   loadUserInfo() {
-    user.getUserInfoApi()
-      .then(rs => {
-        console.log("获取的用户信息:", rs);
+    const userInfo = app.globalData.userInfo || {};
+    // 计算性别文本
+		let genderText = '保密';
+		if (userInfo.gender === '1') {
+			genderText = '男';
+		} else if (userInfo.gender === '2') {
+			genderText = '女';
+		}
 
-        // 计算性别文本
-        let genderText = '保密';
-        if (rs.gender === '1') {
-          genderText = '男';
-        } else if (rs.gender === '2') {
-          genderText = '女';
-        }
-
-        // 更新数据
-        this.setData({
-          userInfo: rs,
-          genderText: genderText,
-          tempNickname: rs.nickName || '',
-          tempBrief: rs.brief || '',
-          tempGender: rs.gender || '0',
-          tempPhone: rs.phone || '',
-          tempEmail: rs.email || ''
-        });
-
-        // 存储到全局
-        app.globalData.userInfo = rs;
-      })
-      .catch(error => {
-        console.error("获取用户信息失败:", error);
-      });
+		// 更新数据
+		this.setData({
+			userInfo,
+			genderText: genderText,
+			tempNickname: userInfo.nickName || '',
+			tempBrief: userInfo.brief || '',
+			tempGender: userInfo.gender || '0',
+			tempPhone: userInfo.phone || '',
+			tempEmail: userInfo.email || ''
+		});
   },
   
   // 显示昵称编辑弹窗
@@ -247,9 +229,9 @@ Page({
     });
     
     user.updateUserInfoApi(this.data.userInfo);
-     // 保存到全局数据
-     app.globalData.userInfo = this.data.userInfo;
-     this.setData({
+    // 保存到全局数据
+    app.globalData.userInfo = this.data.userInfo;
+    this.setData({
       isSaving: false
     });
     wx.showToast({
@@ -259,7 +241,7 @@ Page({
         // 延迟返回上一页
         setTimeout(() => {
           wx.navigateBack();
-        }, 1500);
+        }, 1000);
       }
     });
   }

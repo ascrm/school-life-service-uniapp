@@ -68,28 +68,34 @@ Page({
               });
               
 							// 登录成功后跳转
-              setTimeout(() => {
-								if (this.data.redirectUrl) {
-									// 检查重定向URL是否是tabBar页面
-									const tabBarPages = ['/pages/home/home', '/pages/discover/discover', 
-																			'/pages/publish/publish', '/pages/message/message', 
-																			'/pages/profile/profile'];
-									
-									if (tabBarPages.includes(this.data.redirectUrl)) {
+							console.log("准备跳转...");
+              if (this.data.redirectUrl) {
+								console.log("跳转中。。。")
+								wx.redirectTo({
+									url: this.data.redirectUrl,
+									success: function() {
+										console.log("跳转成功");
+									},
+									fail: function(err) {
+										console.error("跳转失败", err);
+										// 尝试使用switchTab作为备选方案
 										wx.switchTab({
-											url: this.data.redirectUrl,
+											url: '/pages/profile/profile',
+											fail: function(switchErr) {
+												console.error("switchTab也失败了", switchErr);
+											}
 										});
-									} else {
-										wx.redirectTo({
-											url: this.data.redirectUrl,
-										});
+									},
+									complete: function() {
+										console.log("跳转请求完成");
 									}
-								} else {
-									wx.switchTab({
-										url: '/pages/profile/profile',
-									});
-								}
-							}, 1000);
+								});
+							} else {
+								wx.redirectTo({
+									url: '/pages/profile/profile'
+								});
+							}
+              
             })
             .catch((err) => {
               console.error('登录失败', err);

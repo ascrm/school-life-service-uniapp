@@ -74,21 +74,15 @@ App({
         return false;
       }
       
-      // 未登录，保存待执行的操作，并跳转到登录页
+      // 获取当前页面路径
+      const pages = getCurrentPages();
+      const currentPage = pages[pages.length - 1];
+      const currentPath = '/' + currentPage.route;
+			
+      // 未登录，保存待执行的操作，并直接跳转到登录页
       this.globalData.pendingActions.push(callback);
-      
-      wx.showModal({
-        title: '需要登录',
-        content: '请先登录后再操作',
-        confirmText: '去登录',
-        cancelText: '取消',
-        success: (res) => {
-          if (res.confirm) {
-            wx.navigateTo({
-              url: '/pages/login/login'
-            });
-          }
-        }
+      wx.navigateTo({
+        url: `/pages/login/login?redirect=${encodeURIComponent(currentPath)}`
       });
       return false;
     }

@@ -10,7 +10,7 @@ const logoutApi = () => http.post('/user/logout');
 const updateUserInfoApi=( params )=>http.post("/user",params);
 
 //获取用户数据
-const getUserInfoApi=()=>http.get('/user');
+const getUserInfoApi=(params)=>http.get('/user',params);
 
 //获取粉丝列表
 const getFollowersApi=()=>http.get('/follow/fans');
@@ -30,6 +30,9 @@ const unfollowUserApi=(userId)=>http.delete(`/follow/${userId}`);
 //切换关注状态（关注/取消关注）
 const toggleFollowApi=(followeeId)=>http.post(`/follow/change?followeeId=${followeeId}`);
 
+//获取关注状态，是否关注
+const getFollowStatusApi=(params)=>http.get('/follow/status',params)
+
 module.exports = {
   loginApi,
 	logoutApi,
@@ -40,5 +43,6 @@ module.exports = {
 	getMutualsApi,
   followUserApi,
   unfollowUserApi,
-  toggleFollowApi
+	toggleFollowApi,
+	getFollowStatusApi
 }; 
