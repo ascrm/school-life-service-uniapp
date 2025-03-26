@@ -167,7 +167,6 @@ Page({
       receiverId: this.data.targetUser.id,
       content: this.data.inputContent,
 			type: 1,
-			status: 'sending',
     };
     
     // 先在本地添加消息，显示发送中状态
@@ -236,17 +235,16 @@ Page({
   handleReceivedMessage(data) {
     // 根据消息类型处理
     switch (data.type) {
-      case 'chat_message': // 接收到新消息
-        // 检查是否是当前聊天对象的消息
+      case 1: // 接收到新消息
+				// 检查是否是当前聊天对象的消息
+				console.log("senderId：",data.senderId)
+				console.log("targetUserId",this.data.targetUser.id)
         if (data.senderId === this.data.targetUser.id) {
           // 添加到消息列表
           const newMessage = {
-            id: data.messageId || Date.now().toString(),
             senderId: data.senderId,
             content: data.content,
-            type: data.contentType || 'text',
-            timestamp: data.timestamp || new Date().getTime(),
-            status: 'received'
+            type: 1,
           };
           
           this.setData({
